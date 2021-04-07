@@ -1,0 +1,1 @@
+I think we would like to use Slack for project communication. If we use slack, it is very easy to find something we discuss. What do you think?
