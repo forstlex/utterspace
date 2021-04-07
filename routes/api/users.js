@@ -28,9 +28,9 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    User.findOne({ email: req.body.email }).then(user => {
-      if (user) {
-        return res.status(400).json({ errors: [{ msg: "Email already exists" }] });
+    User.find({ $or: [{email: req.body.email}, {name:req.body.name}] }).then(users => {
+      if (users.length) {
+        return res.status(400).json({ errors: [{ msg: "Email or name already exists" }] });
       } else {
         const newUser = new User({
           name: req.body.name,
