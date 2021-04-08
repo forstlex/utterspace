@@ -10,26 +10,21 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     name: '',
     email: '',
     password: '',
-    password2: '',
-    type: false
+    password2: ''
   });
 
-  const { name, email, password, password2, type } = formData;
+  const { name, email, password, password2 } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-
-  const onChangeType = (e) =>
-    setFormData({ ...formData, type: !type })
-    
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      register({ name, email, password, type });
+      register({ name, email, password });
     }
   };
 
@@ -79,14 +74,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             value={password2}
             onChange={onChange}
           />
-        </div>
-        <div className="form-group">
-          <input
-            type="checkbox"
-            name="type"
-            defaultChecked={type}
-            onChange={onChangeType}
-          />  Seller
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>

@@ -15,7 +15,6 @@ const User = require("../../models/User");
 router.post(
   "/register",
   check('name', 'Name is required').notEmpty(),
-  check('type', 'Usertype is required').notEmpty(),
   check('email', 'Please include a valid email').isEmail(),
   check(
     'password',
@@ -28,15 +27,14 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    User.find({ $or: [{email: req.body.email}, {name:req.body.name}] }).then(users => {
-      if (users.length) {
+    User.findOne({ $or: [{email: req.body.email}, {name:req.body.name}] }).then(user => {
+      if (user) {
         return res.status(400).json({ errors: [{ msg: "Email or name already exists" }] });
       } else {
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
-          password: req.body.password,
-          type: req.body.type
+          password: req.body.password
         });
 
         // Hash password before saving in database
