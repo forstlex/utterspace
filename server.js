@@ -20,7 +20,7 @@ const mongoURI = config.get('mongoURI');
 
 // Connect to MongoDB
 
-mongoose.connect(mongoURI, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 
 connection.once('open', () => {
