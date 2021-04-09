@@ -33,6 +33,10 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
+
 // Routes
 app.use("/api/users", users);
 
