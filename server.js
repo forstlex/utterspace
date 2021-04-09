@@ -16,16 +16,16 @@ app.use(
 app.use(bodyParser.json());
 
 // DB Config
-const db = config.get('mongoURI');
+const mongoURI = config.get('mongoURI');
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch(err => console.log(err));
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useCreateIndex: true });
+const connection = mongoose.connection;
+
+connection.once('open', () => {
+  console.log('MongoDB database connection established successfully');
+});
 
 // Passport middleware
 app.use(passport.initialize());

@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb://127.0.0.1:27017/rent_car",
+  "mongoURI": "mongodb+srv://utterspace:pass1989@cluster0.rfud4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   "jwtSecret": "secret"
 }

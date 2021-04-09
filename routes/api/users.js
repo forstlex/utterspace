@@ -27,7 +27,8 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    User.findOne({ $or: [{email: req.body.email}, {name:req.body.name}] }).then(user => {
+    User.findOne({ $or: [{email: req.body.email}, {name:req.body.name}] })
+    .then(user => {
       if (user) {
         return res.status(400).json({ errors: [{ msg: "Email or name already exists" }] });
       } else {
@@ -65,6 +66,10 @@ router.post(
           });
         });
       }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json({ errors: [{ msg: "MongoDB Find USER error" }] });
     });
 });
 
