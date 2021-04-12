@@ -24,8 +24,17 @@ const AddListing = ({ setAlert, user, addSpace }) => {
     e.target.value = null;
   }
 
-  const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onChangeRentType = e => {
+    let type;
+    if (e.target.value === 'garage') {
+      type = 'garage'
+    } else {
+      type = 'driveway';
+    }
+    setFormData({ ...formData, rentType: type });
+  }    
 
   const removeImage = (index) => {
     images.splice(index, 1);
@@ -65,7 +74,7 @@ const AddListing = ({ setAlert, user, addSpace }) => {
               Renting Type
               <span className="required">*</span>
             </label>
-            <select value={rentType} onChange={onChange}>
+            <select value={rentType} onChange={onChangeRentType}>
               <option value="garage">Garage</option>
               <option value="driveway">Driveway</option>
             </select>
