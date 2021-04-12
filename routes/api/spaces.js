@@ -51,32 +51,4 @@ router.get("/:id", auth, async (req, res) => {
   return res.status(200).json({ allSpaces, userSpaces });
 });
 
-router.post('/upload-images', upload.array('imgCollection', 6), (req, res, next) => {
-  const reqFiles = [];
-  const url = req.protocol + '://' + req.get('host')
-  for (var i = 0; i < req.files.length; i++) {
-    reqFiles.push(url + '/public/' + req.files[i].filename)
-  }
-
-  const user = new User({
-    _id: new mongoose.Types.ObjectId(),
-    imgCollection: reqFiles
-  });
-
-  user.save().then(result => {
-    res.status(201).json({
-      message: "Done upload!",
-      userCreated: {
-        _id: result._id,
-        imgCollection: result.imgCollection
-      }
-    })
-  }).catch(err => {
-    console.log(err),
-      res.status(500).json({
-        error: err
-      });
-  })
-})
-
 module.exports = router;
