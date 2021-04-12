@@ -1,5 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
+import { loadUserSpaces } from './listings';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -14,11 +15,11 @@ import {
 export const loadUser = () => async dispatch => {
   try {
     const res = await api.get('/users/login');
-
     dispatch({
       type: USER_LOADED,
       payload: res.data
     });
+    dispatch(loadUserSpaces(res.data._id));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR

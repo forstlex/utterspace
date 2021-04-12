@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const config = require('config')
 const users = require("./routes/api/users");
+const spaces = require("./routes/api/spaces")
 
 const app = express();
 
@@ -39,6 +40,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Routes
 app.use("/api/users", users);
+app.use("/api/spaces", spaces);
 
 const port = process.env.PORT || 5000;
 

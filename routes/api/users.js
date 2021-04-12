@@ -27,51 +27,51 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    User.findOne({ $or: [{email: req.body.email}, {name:req.body.name}] })
-    .then(user => {
-      if (user) {
-        return res.status(400).json({ errors: [{ msg: "Email or name already exists" }] });
-      } else {
-        const newUser = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password
-        });
-
-        // Hash password before saving in database
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then(user => {
-                const payload = {
-                  user: {
-                    id: user.id
-                  }
-                };
-          
-                jwt.sign(
-                  payload,
-                  config.get('jwtSecret'),
-                  { expiresIn: '5 days' },
-                  (err, token) => {
-                    if (err) throw err;
-                    res.json({ token });
-                  }
-                );
-              })
-              .catch(err => console.log(err));
+    User.findOne({ $or: [{ email: req.body.email }, { name: req.body.name }] })
+      .then(user => {
+        if (user) {
+          return res.status(400).json({ errors: [{ msg: "Email or name already exists" }] });
+        } else {
+          const newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
           });
-        });
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).json({ errors: [{ msg: "MongoDB Find USER error" }] });
-    });
-});
+
+          // Hash password before saving in database
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then(user => {
+                  const payload = {
+                    user: {
+                      id: user.id
+                    }
+                  };
+
+                  jwt.sign(
+                    payload,
+                    config.get('jwtSecret'),
+                    { expiresIn: '5 days' },
+                    (err, token) => {
+                      if (err) throw err;
+                      res.json({ token });
+                    }
+                  );
+                })
+                .catch(err => console.log(err));
+            });
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(400).json({ errors: [{ msg: "MongoDB Find USER error" }] });
+      });
+  });
 
 // @route    GET api/users/login
 // @desc     Get user by token

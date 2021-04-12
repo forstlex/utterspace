@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react';
 
-
-const Listings = () => {
-
+const MyListings = () => {
 
   return (
     <Fragment>
-      <h3>List spaces</h3>
-      
+      <h3>My List spaces</h3>      
     </Fragment>
   )
 }
 
-export default Listings;
+export default MyListings;
