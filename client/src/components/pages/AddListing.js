@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import api from '../../utils/api';
 import PlacesAutocomplete from '../autoComplete/index';
 import { setAlert } from '../../actions/alert';
 import { addSpace } from '../../actions/listings';
@@ -66,7 +67,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         formData.append('images', image);
       })
       let localPaths = [];
-      axios.post("http://localhost:3000/api/spaces/upload-images", formData, {
+      api.post("/spaces/upload-images", formData, {
       }).then(res => {
         localPaths = res.data.files;
         const data = { rentType, description, location, price, userid: user._id, images: localPaths };
