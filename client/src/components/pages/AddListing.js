@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 import api from '../../utils/api';
 import PlacesAutocomplete from '../autoComplete/index';
@@ -72,7 +71,10 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         localPaths = res.data.files;
         const data = { rentType, description, location, price, userid: user._id, images: localPaths };
         addSpace(data, history);
-      }).catch(error => console.log('Upload file error:', error));      
+      }).catch(error => {
+        console.log('Upload file error:', error);
+        setAlert(error.Error, 'danger')
+      });      
     }
   };
 

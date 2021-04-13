@@ -2,9 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const fs = require('fs');
 const config = require('config')
 const users = require("./routes/api/users");
-const spaces = require("./routes/api/spaces")
+const spaces = require("./routes/api/spaces");
+
 
 const app = express();
 
@@ -27,6 +29,12 @@ const connection = mongoose.connection;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 });
+
+const uploadFolderPath = './uploads';
+
+if (!fs.existsSync(uploadFolderPath)) {
+  fs.mkdirSync(uploadFolderPath);
+}
 
 // Passport middleware
 app.use(passport.initialize());
