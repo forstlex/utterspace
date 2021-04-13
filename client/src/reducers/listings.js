@@ -5,7 +5,8 @@ import {
 
 const initialState = {
   allSpaces: [],
-  userSpaces: []
+  userSpaces: [],
+  loadingSpace: false
 };
 
 function spaceReducer(state = initialState, action) {
@@ -14,14 +15,17 @@ function spaceReducer(state = initialState, action) {
     case LOAD_USERSPACES: {
       return {
         allSpaces: payload.allSpaces,
-        userSpaces: payload.userSpaces
+        userSpaces: payload.userSpaces,
+        loadingSpace: true
       }
     }
-    case ADD_SPACE:
+    case ADD_SPACE: {
       return {
-        allSpaces: state.allSpaces.concat(payload.space),
-        userSpaces: state.userSpaces.concat(payload.space)
+        allSpaces: state.allSpaces.concat(payload),
+        userSpaces: state.userSpaces.concat(payload)
       };
+    }
+      
     default:
       return initialState;
   }

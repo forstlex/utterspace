@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Create Schema
-const UserSchema = new Schema({
+// Create Space Schema
+const SpaceSchema = new Schema({
   renttype: {
     type: String,
     required: true,
@@ -24,8 +24,11 @@ const UserSchema = new Schema({
     required: true
   },
   images: {
-    type: Array
+    type: Array,
+  },
+  available: {
+    type: Boolean,
   }
 });
 
-module.exports = mongoose.model("spaces", UserSchema);
+module.exports = mongoose.model("spaces", SpaceSchema);

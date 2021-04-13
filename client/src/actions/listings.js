@@ -3,13 +3,14 @@ import { setAlert } from './alert';
 import { ADD_SPACE, LOAD_USERSPACES } from './types';
 
 // Add space to sell
-export const addSpace = (formData) => async dispatch => {
+export const addSpace = (formData, history) => async dispatch => {
   try {
     const res = await api.post('/spaces', formData);
     dispatch({
       type: ADD_SPACE,
       payload: res.data.space
-    });
+    });    
+    history.push('/my-listings');
   } catch(err) {
     const errors = err.response.data.errors;
     if (errors) {

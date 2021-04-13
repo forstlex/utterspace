@@ -1,6 +1,6 @@
 const express = require("express");
 const { v4: uuidv4 } = require('uuid');
-
+const multer = require('multer');
 const router = express.Router();
 
 const { check, validationResult } = require('express-validator');
@@ -12,6 +12,35 @@ const Space = require("../../models/Space");
 // @route POST api/users/register
 // @desc Register user
 // @access Public
+
+const DIR = './uploads/';
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, uuidv4() + '-' + fileName)
+    }
+});
+
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+
+router.post('/upload-images', upload.array('images', 2), (req, res, next) => {
+  const files = req.files.map(file => file.path);
+  res.status(201).json({ files: req.files.map(file => file.path) });
+})
 
 router.post(
   "/",
@@ -34,7 +63,8 @@ router.post(
       location: req.body.location,
       price: req.body.price,
       userid: req.body.userid,
-      images: req.body.images
+      images: req.body.images,
+      available: true
     });
 
     newSpace.save()

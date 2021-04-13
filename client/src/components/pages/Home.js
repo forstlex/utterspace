@@ -1,16 +1,13 @@
 import React, { Fragment, useState } from 'react';
 
-
+import PlacesAutocomplete from '../autoComplete/index';
 const Home = () => {
 
-  const [location, setLocation] = useState('')
-  const onChange = (e) =>
-    setLocation(e.target.value)
+  const [location, setLocation] = useState('');
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setLocation(e.target.value)
-  };
+  const onChangeLocation = (value) => {
+    setLocation(value)
+  }
 
   return (
     <Fragment>
@@ -19,17 +16,7 @@ const Home = () => {
       <h2 className="home-title">We provide rental solutions for unused space.</h2>
       <h2 className="home-title">Think of us like the AirBnBfor cars, trailers, storage and much more</h2>
 
-      <form className="form" onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Enter Location"
-            name="location"
-            value={location}
-            onChange={onChange}            
-          />
-        </div>
-      </form>
+      <PlacesAutocomplete changeLocation={onChangeLocation} />
     </Fragment>
   )
 }

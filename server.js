@@ -31,6 +31,8 @@ connection.once('open', () => {
 // Passport middleware
 app.use(passport.initialize());
 
+app.use('/uploads', express.static('uploads'));
+
 // Passport config
 require("./config/passport")(passport);
 

@@ -1,12 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
-import { Convert } from 'mongo-image-converter';
+import axios from 'axios';
 
+import PlacesAutocomplete from '../autoComplete/index';
 import { setAlert } from '../../actions/alert';
 import { addSpace } from '../../actions/listings';
 
-const AddListing = ({ setAlert, user, addSpace }) => {
+const AddListing = ({ user, addSpace, setAlert }) => {
+
   const [formData, setFormData] = useState({
     rentType: 'driveway',
     description: '',
@@ -16,6 +19,7 @@ const AddListing = ({ setAlert, user, addSpace }) => {
     previewImages: []
   });
 
+  let history = useHistory();
   const { rentType, description, location, price, images, previewImages } = formData;
 
   const onFileChange = e => {
@@ -25,6 +29,10 @@ const AddListing = ({ setAlert, user, addSpace }) => {
   }
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onChangeLocation = (value) => {
+    setFormData({ ...formData, location: value });
+  }
 
   const onChangeRentType = e => {
     let type;
@@ -53,15 +61,17 @@ const AddListing = ({ setAlert, user, addSpace }) => {
     } else if (images.length === 0) {
       setAlert('Please select image.')
     } else {
-      const convertImage = async (img) => {
-        return await Convert(img)
-      }
-      const convertImages = await Promise.all(
-        images.map(img => convertImage(img))
-      )
-
-      const formData = { rentType, description, location, price, userid: user._id, images: convertImages };
-      addSpace(formData)
+      let formData = new FormData();
+      images.forEach(image => {
+        formData.append('images', image);
+      })
+      let localPaths = [];
+      axios.post("http://localhost:3000/api/spaces/upload-images", formData, {
+      }).then(res => {
+        localPaths = res.data.files;
+        const data = { rentType, description, location, price, userid: user._id, images: localPaths };
+        addSpace(data, history);
+      }).catch(error => console.log('Upload file error'));      
     }
   };
 
@@ -107,12 +117,7 @@ const AddListing = ({ setAlert, user, addSpace }) => {
               Location
               <span className="required">*</span>
             </label>
-            <input
-              type="text"
-              name="location"
-              value={location}
-              onChange={onChange}
-            />
+            <PlacesAutocomplete changeLocation={onChangeLocation}/>
             <div className="item_footer">
               <p>You can add space location here.</p>
             </div>
@@ -144,7 +149,7 @@ const AddListing = ({ setAlert, user, addSpace }) => {
                 <h3 style={{ textAlign: 'center', color: 'red' }}>You can remove image to click</h3>
               </div>
             )}
-            <input type="file" value={""} name="imgCollection" onChange={onFileChange} onClick={e => (e.target.value = null)} multiple />
+            <input type="file" value={""} name="images" onChange={onFileChange} onClick={e => (e.target.value = null)} multiple />
           </div>
         </div>
         <input type="submit" className="btn btn-primary" value="Add" />
