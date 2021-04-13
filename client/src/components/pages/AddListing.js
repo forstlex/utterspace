@@ -60,7 +60,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
     } else if (!price) {
       setAlert('Price is required', 'danger');
     } else if (images.length === 0) {
-      setAlert('Please select image.')
+      setAlert('Please select image.', 'danger')
     } else {
       let formData = new FormData();
       images.forEach(image => {
@@ -72,7 +72,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         localPaths = res.data.files;
         const data = { rentType, description, location, price, userid: user._id, images: localPaths };
         addSpace(data, history);
-      }).catch(error => console.log('Upload file error'));      
+      }).catch(error => console.log('Upload file error:', error));      
     }
   };
 
