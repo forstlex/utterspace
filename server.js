@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const fs = require('fs');
-const config = require('config')
+const dotenv = require('dotenv')
 const users = require("./routes/api/users");
 const spaces = require("./routes/api/spaces");
 
 
 const app = express();
 
+dotenv.config();
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
@@ -19,7 +20,7 @@ app.use(
 app.use(bodyParser.json());
 
 // DB Config
-const mongoURI = config.get('mongoURI');
+const mongoURI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.rfud4.mongodb.net/utterSpace?retryWrites=true&w=majority`
 
 // Connect to MongoDB
 

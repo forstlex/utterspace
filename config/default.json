@@ -1,4 +1,3 @@
 {
-  "mongoURI": "mongodb+srv://utterspace:pass1989@cluster0.rfud4.mongodb.net/utterSpace?retryWrites=true&w=majority",
   "jwtSecret": "secret"
 }
