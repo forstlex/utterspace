@@ -1,6 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { ADD_SPACE, LOAD_USERSPACES } from './types';
+import { ADD_SPACE, DELETE_SPACE, LOAD_USERSPACES } from './types';
 
 // Add space to sell
 export const addSpace = (formData, history) => async dispatch => {
@@ -19,12 +19,24 @@ export const addSpace = (formData, history) => async dispatch => {
   }
 };
 
+// Delete space 
+export const deleteSpace = (id) => async dispatch => {
+  try {
+    await api.delete(`/spaces/${id}`);
+    dispatch({
+      type: DELETE_SPACE,
+      payload: id
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Get all spaces for logged in User
 
 export const loadUserSpaces = (userId) => async dispatch => {
   try {
-    const apiValue = "/spaces/" + userId;
-    const res = await api.get(apiValue);
+    const res = await api.get(`/spaces/${userId}`);
 
     dispatch({
       type: LOAD_USERSPACES,

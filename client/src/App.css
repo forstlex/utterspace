@@ -562,7 +562,6 @@ button {
   font-family: Roboto;
   overflow: hidden;
   border: solid 1px #e4e4e4;
-  width: 65%;
   margin: 10px;
 }
 
@@ -602,6 +601,26 @@ button {
 .wrapper_space_item .wp_renttype {
   font-size: 16px;
   padding: 5px;
+}
+
+.main_content {
+  width: 100%;
+  overflow: hidden;
+}
+
+.content_listings {
+  overflow: hidden;
+  padding: 0px;
+  width: 50% !important;
+  float: left;
+  background-color: #eeeeee;
+  margin-right: 15px;
+}
+
+.content_map {
+  width: 45%;
+  float: left;
+  margin: 20px;
 }
 
 /* Mobile Styles */

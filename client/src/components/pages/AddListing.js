@@ -2,11 +2,15 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
+import Geocode from 'react-geocode';
 
 import api from '../../utils/api';
 import PlacesAutocomplete from '../autoComplete/index';
 import { setAlert } from '../../actions/alert';
 import { addSpace } from '../../actions/listings';
+
+Geocode.setApiKey("AIzaSyBz6_ghMkyk--dKtlMtR-7nY0nR-coTVAM");
+Geocode.setLanguage("en");
 
 const AddListing = ({ user, addSpace, setAlert }) => {
 
@@ -69,10 +73,22 @@ const AddListing = ({ user, addSpace, setAlert }) => {
       api.post("/spaces/upload-images", formData, {
       }).then(res => {
         localPaths = res.data.files;
-        const data = { rentType, description, location, price, userid: user._id, images: localPaths };
-        addSpace(data, history);
+        Geocode.fromAddress(location).then(
+          (response) => {
+            const data = {
+              rentType, description,
+              location, price,
+              userid: user._id,
+              images: localPaths,
+              geo: response.results[0].geometry.location
+            };
+            addSpace(data, history);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );        
       }).catch(error => {
-        console.log('Upload file error:', error);
         setAlert(error.Error, 'danger')
       });      
     }

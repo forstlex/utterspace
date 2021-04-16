@@ -8,5 +8,6 @@ export const LOGOUT = 'LOGOUT';
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT'
 export const ADD_SPACE = 'ADD_SPACE';
+export const DELETE_SPACE = 'DELETE_SPACE';
 export const LOAD_USERSPACES = 'LOAD_USERSPACES';
 export const REMOVE_SPACE_FAIL = 'REMOVE_SPACE_FAIL';
