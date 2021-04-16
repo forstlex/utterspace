@@ -2,6 +2,7 @@ const express = require("express");
 const { v4: uuidv4 } = require('uuid');
 const multer = require('multer');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 const { check, validationResult } = require('express-validator');
 
@@ -50,6 +51,7 @@ router.post(
   check('price', 'Price is required').notEmpty(),
   check('userid', 'User id is required').notEmpty(),
   check('images', 'Image is required').notEmpty(),
+  check('geo', 'Geolocation is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -64,6 +66,7 @@ router.post(
       price: req.body.price,
       userid: req.body.userid,
       images: req.body.images,
+      geo: req.body.geo,
       available: true
     });
 
@@ -75,6 +78,14 @@ router.post(
   }
 );
 
+router.delete("/:id", auth, async(req, res) => {
+  const response = await Space.deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+  if (response.deletedCount === 1) {
+    res.status(200).json({ delete: true });
+  } else {
+    res.status(403).json({ delete: false })
+  }
+})
 router.get("/:id", auth, async (req, res) => {
   const allSpaces = await Space.find({});
   const userSpaces = await Space.find({ userid: req.params.id });

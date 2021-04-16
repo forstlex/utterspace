@@ -28,6 +28,9 @@ const SpaceSchema = new Schema({
   },
   available: {
     type: Boolean,
+  },
+  geo: {
+    type: Object,
   }
 });
 
