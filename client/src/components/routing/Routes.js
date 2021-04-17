@@ -5,7 +5,6 @@ import Home from '../pages/Home';
 import Listings from '../pages/Listings';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
-import Dashboard from '../pages/Dashboard';
 import MyListings from '../pages/MyListings';
 import AddListing from '../pages/AddListing';
 import Register from '../auth/Register';
@@ -28,7 +27,6 @@ const Routes = props => {
         <PrivateRoute exact path="/listings" component={Listings} />
         <PrivateRoute exact path="/my-listings" component={MyListings} />
         <PrivateRoute exact path="/my-listings/new" component={AddListing} />
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <Route component={NotFound} />
       </Switch>
     </section>
