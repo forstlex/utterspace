@@ -12,10 +12,11 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
   const deleteLocation = (id) => {
     deleteSpace(id);
   }
+  
   const spaces = userSpaces.map((space, index) =>
     <div key={space._id} className="wrapper_space_item" id={`image${index}`}>
       <div className="wp_image">
-        <img
+        <img className="wp_image_frame"
           src={space.images[0]}
           alt="Space"
         />
@@ -38,7 +39,7 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
             {spaces}
             <Link to="/my-listings/new" className="btn btn-primary">Add a new listings</Link>
           </div>
-          <div style={{ height: "500px" }}>
+          <div className="content_map">
             <GoogleMap spaces={userSpaces} />
           </div>
         </div>

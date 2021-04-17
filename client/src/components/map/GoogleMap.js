@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
   useLoadScript,
@@ -10,10 +10,7 @@ import "@reach/combobox/styles.css";
 import mapStyles from "./mapStyles";
 
 const libraries = ["places"];
-const mapContainerStyle = {
-  height: "500px",
-  width: "500px",
-};
+
 const options = {
   styles: mapStyles,
   disableDefaultUI: true,
@@ -26,6 +23,21 @@ const center = {
 };
 
 export default function App({ spaces }) {
+
+  const [width, setWidth] = useState(window.innerWidth);
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    }
+  }, []);
+
+  let isMobile = (width <= 768);
+
+  const mapContainerStyle = isMobile ? { height: 250, width: 250 } : { height: 570, width: 570 };
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyBz6_ghMkyk--dKtlMtR-7nY0nR-coTVAM",
@@ -50,10 +62,10 @@ export default function App({ spaces }) {
         scaledSize: new window.google.maps.Size(30, 30),
       }}
     >
-      {toolTipNumber===index &&
-      <InfoWindow>
-        <h4>{space.location}</h4>
-      </InfoWindow>}
+      {toolTipNumber === index &&
+        <InfoWindow>
+          <h4>{space.location}</h4>
+        </InfoWindow>}
     </Marker>
   )
 
@@ -61,29 +73,27 @@ export default function App({ spaces }) {
   if (!isLoaded) return "Loading...";
 
   return (
-    <div>
-      <GoogleMap
-        id="map"
-        mapContainerStyle={mapContainerStyle}
-        zoom={8}
-        center={center}
-        options={options}
-        onLoad={map => {
-          map.addListener("center_changed", () => {            
+    <GoogleMap
+      id="map"
+      mapContainerStyle={mapContainerStyle}
+      zoom={8}
+      center={center}
+      options={options}
+      onLoad={map => {
+        map.addListener("center_changed", () => {
+        });
+        map.addListener("click", () => {
+        });
+
+        for (let i = 0; i < spaces.length; i++) {
+          const mapDiv = document.getElementById(`image${i}`);
+          window.google.maps.event.addDomListener(mapDiv, "click", () => {
+            map.panTo(spaces[i].geo)
           });
-          map.addListener("click", () => {
-          });
-          
-          for (let i = 0; i < spaces.length; i++ ){
-            const mapDiv = document.getElementById(`image${i}`);
-            window.google.maps.event.addDomListener(mapDiv, "click", () => {
-              map.panTo(spaces[i].geo)
-            });
-          }          
-        }}
-      >
-        {renderMarkers()}
-      </GoogleMap>
-    </div>
+        }
+      }}
+    >
+      {renderMarkers()}
+    </GoogleMap>
   );
 }
