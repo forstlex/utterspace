@@ -31,11 +31,6 @@ connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 });
 
-// const uploadFolderPath = './uploads';
-// if (!fs.existsSync(uploadFolderPath)) {
-//   fs.mkdirSync(uploadFolderPath);
-// }
-
 // Passport middleware
 app.use(passport.initialize());
 
