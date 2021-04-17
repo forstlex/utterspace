@@ -2,15 +2,18 @@ import {
   REGISTER_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGOUT,
+  LOGIN_FAIL
 } from '../actions/types';
 
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
-  user: null
+  user: null,
+  loginFail: false
 };
 
 function authReducer(state = initialState, action) {
@@ -32,6 +35,7 @@ function authReducer(state = initialState, action) {
         isAuthenticated: true,
         loading: false
       };
+
     case AUTH_ERROR:
     case LOGOUT:
       return {
@@ -39,8 +43,21 @@ function authReducer(state = initialState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
-        user: null
+        user: null,
       };
+
+    case LOGIN_REQUEST: 
+      return {
+        ...state,
+        loginFail: false
+      }
+
+    case LOGIN_FAIL: 
+      return {
+        ...state,
+        loginFail: true
+      }
+
     default:
       return state;
   }

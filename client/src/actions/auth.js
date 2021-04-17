@@ -7,6 +7,7 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
+  LOGIN_REQUEST,
   LOGIN_FAIL,
   LOGOUT
 } from './types';
@@ -52,6 +53,9 @@ export const register = formData => async dispatch => {
 export const login = (email, password) => async dispatch => {
   const body = { email, password };
 
+  dispatch({
+    type: LOGIN_REQUEST
+  })
   try {
     const res = await api.post('/users/login', body);
 
@@ -62,11 +66,8 @@ export const login = (email, password) => async dispatch => {
 
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
+    const error = err.response.data;
+    dispatch(setAlert(error, 'danger'));
 
     dispatch({
       type: LOGIN_FAIL

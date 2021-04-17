@@ -5,18 +5,20 @@ import PropTypes from 'prop-types';
 
 import { login } from '../../actions/auth';
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = ({ login, isAuthenticated, loginFail }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-
+  
+  const [clickLogin, setClickLogin] = useState(false);
   const { email, password } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
+    setClickLogin(true);
     e.preventDefault();
     login(email, password);
   };
@@ -28,9 +30,7 @@ const Login = ({ login, isAuthenticated }) => {
   return (
     <Fragment>
       <h1 className="large text-primary">Sign In</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Sign Into Your Account
-      </p>
+
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <input
@@ -52,7 +52,10 @@ const Login = ({ login, isAuthenticated }) => {
             minLength="6"
           />
         </div>
-        <input type="submit" className="btn btn-primary" value="Login" />
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary">Login  {clickLogin ? !loginFail && <i className="fas fa-spinner fa-spin" /> : null}</button>
+        </div>
+
       </form>
       <p className="my-1">
         Don't have an account? <Link to="/register">Sign Up</Link>
@@ -63,11 +66,13 @@ const Login = ({ login, isAuthenticated }) => {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  loginFail: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  loginFail: state.auth.loginFail
 });
 
 export default connect(mapStateToProps, { login })(Login);

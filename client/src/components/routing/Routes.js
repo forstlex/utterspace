@@ -6,6 +6,7 @@ import Listings from '../pages/Listings';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import MyListings from '../pages/MyListings';
+import BuyListings from '../pages/BuyListings';
 import AddListing from '../pages/AddListing';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
@@ -25,6 +26,7 @@ const Routes = props => {
         <Route exact path="/about" component={About} />
         <Route exact path="/contact" component={Contact} />
         <PrivateRoute exact path="/listings" component={Listings} />
+        <PrivateRoute exact path="/buy-listings" component={BuyListings} />
         <PrivateRoute exact path="/my-listings" component={MyListings} />
         <PrivateRoute exact path="/my-listings/new" component={AddListing} />
         <Route component={NotFound} />
