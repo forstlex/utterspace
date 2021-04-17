@@ -9,12 +9,6 @@ const spaces = require("./routes/api/spaces");
 
 const app = express();
 
-console.log("****************************************")
-console.log('OS TYPE:', os.type()); // "Windows_NT"
-console.log(os.release()); // "10.0.14393"
-console.log('OS PLATFORM:', os.platform()); // "win32"
-console.log("****************************************")
-
 dotenv.config();
 // Bodyparser middleware
 app.use(
@@ -24,8 +18,9 @@ app.use(
 );
 app.use(bodyParser.json());
 
+const dbName = os.platform() === "win32" ? 'utterSpace' : 'heroku';
 // DB Config
-const mongoURI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.rfud4.mongodb.net/utterSpace?retryWrites=true&w=majority`
+const mongoURI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.rfud4.mongodb.net/${dbName}?retryWrites=true&w=majority`
 
 // Connect to MongoDB
 
