@@ -89,11 +89,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
           }
         );
       }).catch(error => {   
-        console.error('ERROR CODE:', error.name + ': ' + error.message);
-        console.log('AAAAA:', error.response);
-        console.log('BBBBBB:', error);
         setAlert(error.message, 'danger');    
-        // setAlert(error.Error, 'danger');
       });
     }
   };
