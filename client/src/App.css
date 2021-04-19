@@ -1,3 +1,5 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
 /* Global Styles */
 :root {
   --primary-color: #17a2b8;
@@ -506,8 +508,14 @@ button {
 }
 
 .preview {
-  width: 300px;
-  margin: 20px 50px;
+  width: 250px;
+  height: 250px;
+  margin: 30px 50px;
+}
+
+.remove_label {
+  text-align: center;
+  color: red;
 }
 
 .item_body {
@@ -563,6 +571,7 @@ button {
   overflow: hidden;
   border: solid 1px #e4e4e4;
   margin-bottom: 15px;
+  max-width: 600px;
 }
 
 .wrapper_space_item .wp_image {
@@ -592,6 +601,9 @@ button {
 .wrapper_space_item .wp_description {
   font-size: 16px;
   padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .wrapper_space_item .wp_price {
@@ -624,6 +636,21 @@ button {
   width: 550px;
   float: left;
   margin: 20px;
+}
+
+.vendor_detail {
+  float: left;
+  width: 50%;
+}
+
+.space_available {
+  margin: 20px 0;
+}
+
+.gallery-section{
+  max-width: 600px;
+  margin-left: auto;
+  margin-right:auto;
 }
 
 /* Mobile Styles */
@@ -741,4 +768,37 @@ button {
     width: 300px;
     height: 300px;
   }
+
+  .form .form-group {
+    margin: 15px 5px;
+  }
+
+  .preview {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    text-align: center;
+    display: block;
+  }
+
+  .upload_frame {
+    padding-top: 10px;
+  }
+
+  .remove_label {
+    text-align: center;
+    color: red;
+    font-size: 15px;
+  }
+
+  .form input[type='submit'] {
+    margin-left: 0;
+  }
+
+  .gallery-section{
+    max-width: 300px;
+    margin-left: auto;
+    margin-right:auto;
+  }
+
 }

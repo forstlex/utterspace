@@ -13,6 +13,7 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
+  allUsers: [],
   loginFail: false
 };
 
@@ -25,8 +26,10 @@ function authReducer(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload
+        user: payload.currentUser,
+        allUsers: payload.allUsers
       };
+      
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       return {

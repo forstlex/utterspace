@@ -77,13 +77,24 @@ router.post(
 // @desc     Get user by token
 // @access   Private
 router.get('/login', auth, async (req, res) => {
+  let user;
+  let allUsers;
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    user = await User.findById(req.user.id).select('-password');
+    // res.json(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
+
+  try {
+    allUsers = await User.find({});
+  } catch (error) {
+    console.log(err.message);
+    res.status(500).send('GET ALL USER ERROR');
+  }
+
+  res.json({ currentUser: user, allUsers: allUsers });
 });
 
 // @route    POST api/users/login

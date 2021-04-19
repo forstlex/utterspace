@@ -20,7 +20,7 @@ export const loadUser = () => async dispatch => {
       type: USER_LOADED,
       payload: res.data
     });
-    dispatch(loadUserSpaces(res.data._id));
+    dispatch(loadUserSpaces(res.data.currentUser._id));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR

@@ -26,7 +26,7 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
         <h5 className="wp_description">{space.description}</h5>
         <h5 className="wp_price">${space.price} per hour</h5>
         <span className="wp_renttype">{space.renttype}</span>
-        <button onClick={() => deleteLocation(space._id)}>Delete</button>
+        <button className="btn btn-primary" onClick={() => deleteLocation(space._id)}>Delete</button>
       </div>
     </div>
   );
@@ -35,7 +35,7 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
     <Fragment>
       {loadingSpace === false ? <Spinner /> :
         <div className="main_content" >
-          <div className="content_listings" id="Test">
+          <div className="content_listings">
             {spaces}
             <Link to="/my-listings/new" className="btn btn-primary">Add a new listings</Link>
           </div>

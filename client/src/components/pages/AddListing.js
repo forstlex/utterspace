@@ -46,7 +46,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
       type = 'driveway';
     }
     setFormData({ ...formData, rentType: type });
-  }    
+  }
 
   const removeImage = (index) => {
     images.splice(index, 1);
@@ -87,10 +87,12 @@ const AddListing = ({ user, addSpace, setAlert }) => {
           (error) => {
             console.error(error);
           }
-        );        
-      }).catch(error => {
-        setAlert(error.Error, 'danger')
-      });      
+        );
+      }).catch(error => {   
+        console.log('UPLOAD IMAGE ERROR:', error); 
+        setAlert(error);    
+        setAlert(error.Error, 'danger');
+      });
     }
   };
 
@@ -136,7 +138,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
               Location
               <span className="required">*</span>
             </label>
-            <PlacesAutocomplete changeLocation={onChangeLocation}/>
+            <PlacesAutocomplete changeLocation={onChangeLocation} />
             <div className="item_footer">
               <p>You can add space location here.</p>
             </div>
@@ -163,15 +165,18 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         <div className="form-group">
           <div className="item_body">
             {previewImages.length !== 0 && (
-              <div>
+              <div className="upload_frame">
                 {previewImages.map((img, index) => <img key={index} onClick={(e) => removeImage(e, index)} className="preview" src={img} alt="" />)}
-                <h3 style={{ textAlign: 'center', color: 'red' }}>You can remove image to click</h3>
+                <h3 className="remove_label">You can remove image to click</h3>
               </div>
             )}
             <input type="file" value={""} name="images" onChange={onFileChange} onClick={e => (e.target.value = null)} multiple />
           </div>
         </div>
-        <input type="submit" className="btn btn-primary" value="Add" />
+        <div className="form-group">
+          <input type="submit" className="btn btn-primary" value="Add" />
+        </div>
+
       </form>
 
     </Fragment>
