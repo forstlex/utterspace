@@ -90,6 +90,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         );
       }).catch(error => {   
         console.error('ERROR CODE:', error.name + ': ' + error.message);
+        console.log('AAAAA:', error.response.data);
         // setAlert(error);    
         // setAlert(error.Error, 'danger');
       });
