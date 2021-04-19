@@ -23,6 +23,8 @@ const AddListing = ({ user, addSpace, setAlert }) => {
     previewImages: []
   });
 
+  const [uploading, setUploading] = useState(false);
+
   let history = useHistory();
   const { rentType, description, location, price, images, previewImages } = formData;
 
@@ -70,6 +72,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
         formData.append('images', image);
       })
       let localPaths = [];
+      setUploading(true);
       api.post("/spaces/upload-images", formData, {
       }).then(res => {
         localPaths = res.data.files;
@@ -88,8 +91,10 @@ const AddListing = ({ user, addSpace, setAlert }) => {
             console.error(error);
           }
         );
-      }).catch(error => {   
-        setAlert(error.message, 'danger');    
+        setUploading(false);
+      }).catch(error => {
+        setAlert(error.message, 'danger');
+        setUploading(false);
       });
     }
   };
@@ -171,8 +176,9 @@ const AddListing = ({ user, addSpace, setAlert }) => {
             <input type="file" value={""} name="images" onChange={onFileChange} onClick={e => (e.target.value = null)} multiple />
           </div>
         </div>
+
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Add" />
+          <button type="submit" className="btn btn-primary">Add  {uploading ? <i className="fas fa-spinner fa-spin" /> : null}</button>
         </div>
 
       </form>
