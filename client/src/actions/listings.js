@@ -15,6 +15,8 @@ export const addSpace = (formData, history) => async dispatch => {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert(err.response.statusText, 'danger'));
     }
   }
 };
@@ -46,6 +48,8 @@ export const loadUserSpaces = (userId) => async dispatch => {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert(err.response.statusText, 'danger'));
     }
   }
 }

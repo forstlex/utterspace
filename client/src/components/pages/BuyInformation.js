@@ -5,8 +5,6 @@ import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 
-// import "react-image-gallery/styles/css/image-gallery.css";
-
 const BuyInformation = ({ allUsers, buySpaces }) => {
 
   const space = buySpaces.find(space => space._id);
@@ -19,9 +17,9 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
   }
   const uId = space.userid;
   const seller = allUsers.find(u => uId === u._id);
-  const host = navigator.platform === 'Win32' ? 'http://localhost:3000/' : 'https://utterspace.herokuapp.com/';
+  const host = window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'https://utterspace.herokuapp.com/';
   const images = space.images.map(file => {
-    const url = `${host}${file}`
+    const url = `${host}${file}`;
     return {
       original: `${url}`,
       thumbnail: `${url}`
