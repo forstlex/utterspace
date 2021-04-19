@@ -9,7 +9,6 @@ import ImageGallery from 'react-image-gallery';
 
 const BuyInformation = ({ allUsers, buySpaces }) => {
 
-  console.log('NAVIGATOR:', navigator.platform);
   const space = buySpaces.find(space => space._id);
   if (!space) {
     return (
