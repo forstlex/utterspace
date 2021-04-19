@@ -89,9 +89,9 @@ const AddListing = ({ user, addSpace, setAlert }) => {
           }
         );
       }).catch(error => {   
-        console.log('UPLOAD IMAGE ERROR:', error); 
-        setAlert(error);    
-        setAlert(error.Error, 'danger');
+        console.error('ERROR CODE:', error.name + ': ' + error.message);
+        // setAlert(error);    
+        // setAlert(error.Error, 'danger');
       });
     }
   };
