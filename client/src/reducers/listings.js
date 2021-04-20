@@ -1,7 +1,8 @@
 import {
   ADD_SPACE,
   DELETE_SPACE,
-  LOAD_USERSPACES
+  LOAD_USERSPACES,
+  REMOVE_BOOKING_SPACE
 } from '../actions/types';
 
 const initialState = {
@@ -14,31 +15,36 @@ const initialState = {
 function spaceReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case LOAD_USERSPACES: {
-      const buySpaces = payload.userSpaces.length === 0 ? payload.allSpaces :
-        payload.allSpaces.filter(s => s.userid !== payload.userSpaces[0].userid)
-
+    case LOAD_USERSPACES:
       return {
         allSpaces: payload.allSpaces,
         userSpaces: payload.userSpaces,
-        buySpaces,
+        buySpaces: payload.buySpaces,
         loadingSpace: true
       }
-    }
+
     case ADD_SPACE: 
       return {
+        ...state,
         allSpaces: state.allSpaces.concat(payload),
         userSpaces: state.userSpaces.concat(payload)
       };
     
     case DELETE_SPACE:
       return {
+        ...state,
         allSpaces: state.allSpaces.filter(s => s._id !== payload),
         userSpaces: state.userSpaces.filter(s => s._id !== payload)
       }
-
+    
+    case REMOVE_BOOKING_SPACE:
+      return {
+        ...state,
+        allSpaces: state.allSpaces.filter(s => s._id !== payload),
+        buySpaces: state.buySpaces.filter(s => s._id !== payload)
+      }
     default:
-      return initialState;
+      return state;
   }
 }
 

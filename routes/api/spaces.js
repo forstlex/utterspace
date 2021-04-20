@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 
 const { check, validationResult } = require('express-validator');
 
-const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth');
+
 // Load Space model
 const Space = require("../../models/Space");
 
@@ -41,7 +42,7 @@ var upload = multer({
 router.post('/upload-images', upload.array('images', 2), (req, res, next) => {
   const files = req.files.map(file => file.path);
   res.status(201).json({ files: req.files.map(file => file.path) });
-})
+});
 
 router.post(
   "/",
@@ -52,6 +53,7 @@ router.post(
   check('userid', 'User id is required').notEmpty(),
   check('images', 'Image is required').notEmpty(),
   check('geo', 'Geolocation is required').notEmpty(),
+  auth,
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -85,11 +87,13 @@ router.delete("/:id", auth, async(req, res) => {
   } else {
     res.status(403).json({ delete: false })
   }
-})
+});
+
 router.get("/:id", auth, async (req, res) => {
-  const allSpaces = await Space.find({});
-  const userSpaces = await Space.find({ userid: req.params.id });
-  return res.status(200).json({ allSpaces, userSpaces });
+  const allSpaces = await Space.find({ available: true });
+  const buySpaces = allSpaces.filter(s => s.userid != req.params.id);
+  const userSpaces = await Space.find({ $and: [{ userid: req.params.id }, { available: true }]});
+  return res.status(200).json({ allSpaces, userSpaces, buySpaces });
 });
 
 module.exports = router;

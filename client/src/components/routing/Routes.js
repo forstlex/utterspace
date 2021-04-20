@@ -9,6 +9,7 @@ import MyListings from '../pages/MyListings';
 import BuyListings from '../pages/BuyListings';
 import AddListing from '../pages/AddListing';
 import BuyInformation from '../pages/BuyInformation';
+import Booking from '../pages/BookingPage';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
 import Alert from '../layout/Alert';
@@ -29,6 +30,7 @@ const Routes = props => {
         <PrivateRoute exact path="/listings" component={Listings} />
         <PrivateRoute exact path="/buy-listings" component={BuyListings} />
         <PrivateRoute exact path="/vendor-info/:id" component={BuyInformation} />
+        <PrivateRoute exact path="/booking/:id" component={Booking} />
         <PrivateRoute exact path="/my-listings" component={MyListings} />
         <PrivateRoute exact path="/my-listings/new" component={AddListing} />
         <Route component={NotFound} />

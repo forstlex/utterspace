@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const os = require('os');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+
 const users = require("./routes/api/users");
 const spaces = require("./routes/api/spaces");
+const bookings = require("./routes/api/bookings");
 
 const app = express();
 
@@ -46,6 +48,7 @@ if (process.env.NODE_ENV === 'production') {
 // Routes
 app.use("/api/users", users);
 app.use("/api/spaces", spaces);
+app.use("/api/bookings", bookings);
 
 const port = process.env.PORT || 5000;
 

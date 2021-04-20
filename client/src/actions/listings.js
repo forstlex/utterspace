@@ -35,7 +35,6 @@ export const deleteSpace = (id) => async dispatch => {
 }
 
 // Get all spaces for logged in User
-
 export const loadUserSpaces = (userId) => async dispatch => {
   try {
     const res = await api.get(`/spaces/${userId}`);
@@ -52,11 +51,4 @@ export const loadUserSpaces = (userId) => async dispatch => {
       dispatch(setAlert(err.response.statusText, 'danger'));
     }
   }
-}
-
-export const removeSpace = (listing) => async dispatch => {
-  // try {
-  //   const res = await api.delete('/listings/value');
-  //   disp
-  // }
 }

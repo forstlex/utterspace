@@ -31,23 +31,29 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
       <div className="gallery-section">
         <ImageGallery items={images} />
       </div>
-
-      <div className="vendor_detail">
-        <h3>Vendor Name: {seller.name}</h3>
+      <div className="seller-information">
+        <div className="vendor-name">
+          <h3>Vendor Name: {seller.name}</h3>
+        </div>
+        <div className="space-available">
+          <span>Availability: Available</span>
+        </div>
+        <div className="vendor-detail">
+          <h3>Description: {space.description}</h3>
+        </div>
+        <div className="action-buttons">
+          <Link className="btn btn-primary" to="/messages">Contact</Link>
+          <Link className="btn btn-primary" to={`/booking/${space._id}`} style={{ float: 'right' }}>Book</Link>
+        </div>
       </div>
-      <div className="space_available"><span>Available</span></div>
-      <div className="vendor_detail">
-        <h3>Description: {space.description}</h3>
-      </div>
 
-      <Link className="btn btn-primary" to="/messages">Contact</Link>
-      <Link className="btn btn-primary" to="/booking">Book</Link>
     </Fragment>
   )
 }
 
 BuyInformation.propTypes = {
-  buySpaces: PropTypes.array
+  buySpaces: PropTypes.array,
+  allUsers: PropTypes.array
 }
 
 const mapStateToProps = state => ({
