@@ -1,9 +1,12 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { CREATE_BOOKING, REMOVE_BOOKING_SPACE } from './types';
+import { CREATE_BOOKING, REMOVE_BOOKING_SPACE, BOOKING_REQUEST, BOOKING_FAILURE } from './types';
 
 // Create booking
 export const createBooking = (booking, history) => async dispatch => {
+  dispatch({
+    type: BOOKING_REQUEST
+  })
   try {
     const res = await api.post('/bookings', booking);
     
@@ -20,5 +23,6 @@ export const createBooking = (booking, history) => async dispatch => {
     } else {
       dispatch(setAlert(err.response.statusText, 'danger'));
     }
+    dispatch({ type: BOOKING_FAILURE })
   }
 }

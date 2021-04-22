@@ -13,7 +13,10 @@ const Space = require("../../models/Space");
 router.post(
   "/",
   check('sid', 'Space id is required').notEmpty(),
-  check('uid', 'User id is required').notEmpty(),
+  check('sellerid', 'Seller Id is required').notEmpty(),
+  check('buyerid', 'Buyer Id is required').notEmpty(),
+  check('location', 'Space Location is required').notEmpty(),
+  check('images', 'Space images are required').notEmpty(),
   check('startdate', 'Start Date is required').notEmpty(),
   check('enddate', 'End Date is required').notEmpty(),
   check('price', 'Start Date is required').notEmpty(),
@@ -27,7 +30,10 @@ router.post(
 
     const newBooking = new Booking({
       sid: req.body.sid,
-      uid: req.body.uid,
+      sellerid: req.body.sellerid,
+      buyerid: req.body.buyerid,
+      location: req.body.location,
+      images: req.body.images,
       startdate: req.body.startdate,
       enddate: req.body.enddate,
       price: req.body.price

@@ -7,7 +7,11 @@ const BookingSchema = new Schema({
     type: String,
     required: true
   },
-  uid: {
+  buyerid: {
+    type: String,
+    required: true
+  },
+  sellerid: {
     type: String,
     required: true
   },
@@ -16,6 +20,14 @@ const BookingSchema = new Schema({
     required: true
   },
   enddate: {
+    type: String,
+    required: true
+  },
+  images: {
+    type: Array,
+    required: true
+  },
+  location: {
     type: String,
     required: true
   },

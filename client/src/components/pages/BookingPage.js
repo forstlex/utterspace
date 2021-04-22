@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setAlert } from '../../actions/alert';
 import { createBooking } from '../../actions/booking';
 
-const BookingPage = ({ match, setAlert, buySpaces, allUsers, createBooking }) => {
+const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, createBooking, bookingRequest }) => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -71,7 +71,16 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, createBooking }) =>
       return;
     }
 
-    const booking = { sid: space._id, uid: seller._id, startdate: startDate.toDateString(), enddate: endDate.toDateString(), price: space.price * daysRent }
+    const booking = {
+      sid: space._id,
+      sellerid: seller._id,
+      buyerid: loggedinUser._id,
+      location: space.location,
+      images: space.images,
+      startdate: startDate.toDateString(),
+      enddate: endDate.toDateString(),
+      price: space.price * daysRent
+    }
     createBooking(booking, history);
   }
 
@@ -97,7 +106,7 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, createBooking }) =>
           <div className="booking-info"><span className="booking-info-title">Total Price: {!selectDayError && space.price * daysRent}</span> </div>
         </div>
 
-        <button className="btn btn-primary" type="submit">Book</button>
+        <button className="btn btn-primary" type="submit">Book {bookingRequest && <i className="fas fa-spinner fa-spin" />}</button>
       </form>
     </Fragment>
   )
@@ -106,13 +115,16 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, createBooking }) =>
 BookingPage.propTypes = {
   buySpaces: PropTypes.array,
   allUsers: PropTypes.array,
+  loggedinUser: PropTypes.object,
   setAlert: PropTypes.func,
   createBooking: PropTypes.func
 }
 
 const mapStateToProps = state => ({
   buySpaces: state.listings.buySpaces,
-  allUsers: state.auth.allUsers
+  allUsers: state.auth.allUsers,
+  loggedinUser: state.auth.user,
+  bookingRequest: state.bookings.bookingRequest
 });
 
 export default connect(mapStateToProps, { setAlert, createBooking })(BookingPage);
