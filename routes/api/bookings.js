@@ -41,9 +41,9 @@ router.post(
 
     newBooking.save()
       .then(booking => {
-        Space.updateOne({ _id: req.body.sid }, { $set: { available: false }})
+        Space.updateOne({ _id: req.body.sid }, { $set: { available: false, expiredate: req.body.enddate }})
           .then(res.status(200).json({ booking }))
-          .catch(error => console.log('Delete booked space error:', error))
+          .catch(error => console.log('Update space booked error:', error))
       })
       .catch(err => {
         console.log('Booking save error:', err) 

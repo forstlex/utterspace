@@ -1,6 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { ADD_SPACE, DELETE_SPACE, LOAD_USERSPACES } from './types';
+import { ADD_SPACE, DELETE_SPACE, LOAD_USERSPACES, LOAD_GUESTSPACES } from './types';
 
 // Add space to sell
 export const addSpace = (formData, history) => async dispatch => {
@@ -43,6 +43,23 @@ export const loadUserSpaces = (userId) => async dispatch => {
       type: LOAD_USERSPACES,
       payload: res.data
     })
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert(err.response.statusText, 'danger'));
+    }
+  }
+}
+
+export const loadGuestSpaces = () => async dispatch => {
+  try {
+    const res = await api.get('/spaces/all');
+    dispatch({
+      type: LOAD_GUESTSPACES,
+      payload: res.data
+    });
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

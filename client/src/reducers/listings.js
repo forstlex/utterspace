@@ -2,14 +2,16 @@ import {
   ADD_SPACE,
   DELETE_SPACE,
   LOAD_USERSPACES,
-  REMOVE_BOOKING_SPACE
+  REMOVE_BOOKING_SPACE,
+  LOAD_GUESTSPACES
 } from '../actions/types';
 
 const initialState = {
   allSpaces: [],
   userSpaces: [],
   buySpaces: [],
-  loadingSpace: false
+  loadingSpace: false,
+  loadingGuestSpaces: false
 };
 
 function spaceReducer(state = initialState, action) {
@@ -21,6 +23,13 @@ function spaceReducer(state = initialState, action) {
         userSpaces: payload.userSpaces,
         buySpaces: payload.buySpaces,
         loadingSpace: true
+      }
+    
+    case LOAD_GUESTSPACES:
+      return {
+        ...state,
+        loadingGuestSpaces: true,
+        allSpaces: payload.allSpaces
       }
 
     case ADD_SPACE: 

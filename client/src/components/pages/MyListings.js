@@ -62,6 +62,6 @@ const mapStateToProps = state => ({
   userSpaces: state.listings.userSpaces,
   allSpaces: state.listings.allSpaces,
   loadingSpace: state.listings.loadingSpace
-})
+});
 
 export default connect(mapStateToProps, { deleteSpace })(MyListings);

@@ -39,6 +39,21 @@ var upload = multer({
     }
 });
 
+// @route GET api/spaces/all
+// @desc Guest Spaces
+// @access Public
+router.get("/all", async (req, res) => {
+
+  let allSpaces = [];
+  try {
+    allSpaces = await Space.find({});
+    res.status(200).json({ allSpaces });
+  } catch (err) {
+    console.error(err)
+    res.status(400).send('Unable to get spaces');
+  }
+});
+
 router.post('/upload-images', upload.array('images', 2), (req, res, next) => {
   const files = req.files.map(file => file.path);
   res.status(201).json({ files: req.files.map(file => file.path) });

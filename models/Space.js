@@ -25,12 +25,17 @@ const SpaceSchema = new Schema({
   },
   images: {
     type: Array,
+    required: true
   },
   available: {
     type: Boolean,
   },
   geo: {
     type: Object,
+    required: true
+  },
+  expiredate: {
+    type: String,
   }
 });
 
