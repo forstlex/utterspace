@@ -6,7 +6,7 @@ import Spinner from "../layout/Spinner";
 
 const CLIENT = {
   sandbox:"AfZydyU7Sh8-N2n2YMfiR0cxPNDG3NBVhcpAPenpva0o4_4ODPSPccqXij64vXsTEtf4CeSn1_ZC5Jrq",
-  production:"your client id"
+  production:"AfZydyU7Sh8-N2n2YMfiR0cxPNDG3NBVhcpAPenpva0o4_4ODPSPccqXij64vXsTEtf4CeSn1_ZC5Jrq"
 };
 
 const CLIENT_ID =
