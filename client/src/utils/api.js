@@ -8,7 +8,7 @@ const api = axios.create({
     'Content-Type': 'application/json'
   },
   credentials: 'same-origin',
-  ' Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': '*'
 });
 /**
     intercept any error responses from the api

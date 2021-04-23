@@ -12,6 +12,7 @@ import BuyInformation from '../pages/BuyInformation';
 import Booking from '../pages/BookingPage';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
+import ChatLayout from '../../components/chats/ChatLayout';
 import Alert from '../layout/Alert';
 import NotFound from '../layout/NotFound';
 import PrivateRoute from '../routing/PrivateRoute';
@@ -33,6 +34,7 @@ const Routes = props => {
         <PrivateRoute exact path="/booking/:id" component={Booking} />
         <PrivateRoute exact path="/my-listings" component={MyListings} />
         <PrivateRoute exact path="/my-listings/new" component={AddListing} />
+        <PrivateRoute exact path="/messages" component={ChatLayout} />
         <Route component={NotFound} />
       </Switch>
     </section>

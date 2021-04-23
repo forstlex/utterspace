@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.8.1",
     "gravatar": "^1.8.1",
+    "http-proxy-middleware": "^1.2.0",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongo-image-converter": "^1.0.2",
@@ -30,6 +31,7 @@
     "normalize-url": "^5.3.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "socket.io": "^4.0.1",
     "uuid": "^8.3.2",
     "validator": "^10.9.0"
   },
