@@ -698,6 +698,10 @@ button {
   font-size: 18px;
 }
 
+.payment_section {
+  text-align: center;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {

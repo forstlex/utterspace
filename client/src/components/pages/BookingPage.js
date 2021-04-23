@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { setAlert } from '../../actions/alert';
 import { createBooking } from '../../actions/booking';
+import PaypalButtons from "../payment/PaypalButtons";
 
 const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, createBooking, bookingRequest }) => {
 
@@ -15,6 +16,7 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
   const [endDate, setEndDate] = useState(new Date());
   const [daysRent, setDaysRent] = useState(1);
   const [selectDayError, setSelectDayError] = useState(false);
+  const [showPaypal, setShowPaypal] = useState(false);
 
   let history = useHistory();
 
@@ -64,13 +66,8 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
     setSelectDayError(false);
   }
 
-  const onSubmit = e => {
-    e.preventDefault();
-    if (startDate > endDate) {
-      setAlert('Start date should be before than end date.', 'danger');
-      return;
-    }
-
+  const finishPayment = () => {
+    setShowPaypal(false);
     const booking = {
       sid: space._id,
       sellerid: seller._id,
@@ -82,6 +79,21 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
       price: space.price * daysRent
     }
     createBooking(booking, history);
+  }
+
+  const onSubmit = e => {
+    e.preventDefault();
+    if (startDate > endDate) {
+      setAlert('Start date should be before than end date.', 'danger');
+      return;
+    }
+    setShowPaypal(true);    
+  }
+
+  if (showPaypal) {
+    return (
+      <PaypalButtons finishPayment={finishPayment} price={space.price * daysRent} />
+    );
   }
 
   return (
