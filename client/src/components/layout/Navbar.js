@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { isAuthenticated }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
+
   const authLinks = (
     <ul>
       <li>
@@ -23,7 +24,7 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
       <li>
         <a onClick={logout} href="/login">
           <i className="fas fa-sign-out-alt" />{' '}
-          <span className="hide-sm">Logout</span>
+          <span className="hide-sm">Logout({user && user.name})</span>
         </a>
       </li>
     </ul>

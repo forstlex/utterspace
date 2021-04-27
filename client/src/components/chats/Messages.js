@@ -8,7 +8,7 @@ class Messages extends Component {
     this.scrollDown = this.scrollDown.bind(this)
   }
 
-  scrollDown(){
+  scrollDown() {
     const { messages } = this.refs
     messages.scrollTop = messages.scrollHeight
   }
@@ -21,26 +21,24 @@ class Messages extends Component {
     this.scrollDown()
   }
 
-  getTime = () => {
-    const date = new Date(Date.now())
-    return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
+  getTime = (timestamp) => {
+    return new Date(timestamp).toLocaleTimeString("en-US");
   }
 
-
-  renderTypingUsers(){
-      // We cannot interate through object using es6 map function like we do in array
-      // Instead here we use lodash map function
-      return _.map(this.props.typingUsers, user => {
-        return (
-          <li className="user-typing text-muted" key={user}>
-            <i>{`${user} is typing...`}</i>
-          </li>
-        );
-      });
+  renderTypingUsers() {
+    // We cannot interate through object using es6 map function like we do in array
+    // Instead here we use lodash map function
+    return _.map(this.props.typingUsers, user => {
+      return (
+        <li className="user-typing text-muted" key={user}>
+          <i>{`${user} is typing...`}</i>
+        </li>
+      );
+    });
   }
 
-  renderChat(chats, myUsername){
-    if(chats.length > 0){
+  renderChat(chats, myUsername) {
+    if (chats.length > 0) {
       return chats.map((chat, index) => {
         const msgAlign = chat.username === myUsername ? 'right' : ''
         return (
@@ -48,27 +46,27 @@ class Messages extends Component {
             <div>
               <div className={`m-box d-flex ${msgAlign}`}>
                 <span className="m">{chat.message}</span>
-                <small>{this.getTime()}</small>
+                <small>{this.getTime(chat.timestamp)}</small>
               </div>
               {chat.username !== myUsername && <span className="text-muted sender">{chat.username}</span>}
             </div>
           </li>
         )
       })
-    }else{
+    } else {
       return <li className="no-msg text-muted">Send a message to start a conversation.</li>
     }
   }
 
   render() {
-    const {chats, myUsername} = this.props
+    const { chats, myUsername } = this.props;
     return (
       <ul ref="messages" className="messages neutralize">
         {
           this.renderChat(chats, myUsername)
         }
         {
-          this.renderTypingUsers()
+          // this.renderTypingUsers()
         }
       </ul>
     );

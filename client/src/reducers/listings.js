@@ -1,9 +1,9 @@
 import {
   ADD_SPACE,
   DELETE_SPACE,
-  LOAD_USERSPACES,
+  LOAD_USER_SPACES,
   REMOVE_BOOKING_SPACE,
-  LOAD_GUESTSPACES
+  LOAD_GUEST_SPACES
 } from '../actions/types';
 
 const initialState = {
@@ -17,7 +17,7 @@ const initialState = {
 function spaceReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case LOAD_USERSPACES:
+    case LOAD_USER_SPACES:
       return {
         allSpaces: payload.allSpaces,
         userSpaces: payload.userSpaces,
@@ -25,7 +25,7 @@ function spaceReducer(state = initialState, action) {
         loadingSpace: true
       }
     
-    case LOAD_GUESTSPACES:
+    case LOAD_GUEST_SPACES:
       return {
         ...state,
         loadingGuestSpaces: true,

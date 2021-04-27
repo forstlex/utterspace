@@ -6,9 +6,10 @@ const os = require('os');
 const dotenv = require('dotenv');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const users = require("./routes/api/users");
-const spaces = require("./routes/api/spaces");
-const bookings = require("./routes/api/bookings");
+const userRoutes = require("./routes/api/users");
+const spaceRoutes = require("./routes/api/spaces");
+const bookingRoutes = require("./routes/api/bookings");
+const messageRoutes = require('./routes/api/messages');
 
 const { VERIFY_USER, LOGIN, USER_JOINED, ADD_USER, NEW_MESSAGE, TYPING, STOP_TYPING, USER_LEFT } = require('./client/src/events');
 
@@ -50,9 +51,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Routes
-app.use("/api/users", users);
-app.use("/api/spaces", spaces);
-app.use("/api/bookings", bookings);
+app.use("/api/users", userRoutes);
+app.use("/api/spaces", spaceRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/messages", messageRoutes);
 
 const port = process.env.PORT || 5000;
 
@@ -61,28 +63,23 @@ const io = require('socket.io')(server);
 
 server.listen(port, () => console.log(`Server up and running on port ${port} !`));
 
-function isUser(users, username){
-  return users.some(userName => {
-    return username === userName
-  })
-}
+var numUsers = 0;
+var users = [];
 
 io.on('connection', (socket) => {
   var addedUser = false;
 
-  socket.on(VERIFY_USER, (data) => {
-    console.log('GGGGGGGGGGG:', data);
-    // console.log('BBBBBBBBBBBBBB: ', username);
-    // if(isUser(users, username)){
-    //   callback({isUser: true, username: null})
-    // }else{
-    //   callback({isUser: false, username})
-    // }
+  socket.on(VERIFY_USER, (username, callback) => {
+    if (users.includes(username)) {
+      callback({ isUser: true, username: null })
+    } else {
+      callback({ isUser: false, username })
+    }
   })
 
   // when the client emits 'add user', this listens and executes
   socket.on(ADD_USER, (username) => {
-    if (addedUser) return; 
+    if (addedUser) return;
 
     // we store the username in the socket session for this client
     socket.username = username;
@@ -104,10 +101,12 @@ io.on('connection', (socket) => {
   // when the client emits 'new message', this listens and executes
   socket.on(NEW_MESSAGE, (data) => {
     // we tell the client to execute 'new message'
-    console.log('AAAAAAAAAAAAAAAAA:', socket.username, 'Message:', data);
     socket.broadcast.emit(NEW_MESSAGE, {
-      username: socket.username,
-      message: data
+      username: data.username,
+      message: data.message,
+      sender_id: data.sender_id,
+      receiver_id: data.receiver_id,
+      timestamp: data.timestamp
     });
   });
 

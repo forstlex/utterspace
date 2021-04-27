@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from "react";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { FaRegPaperPlane } from "react-icons/fa";
+
 import Messages from "./Messages";
 import Sidebar from "./Sidebar";
-import { FaRegPaperPlane } from "react-icons/fa";
+import { sendMessage } from '../../actions/messages';
+
 import {
   LOGIN,
   USER_JOINED,
@@ -14,19 +19,28 @@ import {
 class ChatContainer extends Component {
   constructor(props) {
     super(props);
+    const contactedUsers = this.props.allUsers.filter(u => u._id === this.props.contactUId);
+
+    const chats = this.props.allMessages.map(msg => {
+      const sender = this.props.allUsers.find(u => u._id === msg.sender_id);
+      return {
+        username: sender.name,
+        message: msg.text,
+        timestamp: msg.timestamp
+      }
+    });
     this.state = {
       socket: null,
       message: "",
       typing: false,
-      chats: [],
-      users: [],
+      chats,
+      users: contactedUsers,
       typingUsers: {}
     };
   }
 
   componentWillMount() {
     const { socket } = this.props;
-    // socket.emit('add user', 'manjil');
 
     // Whenever the server emits 'login', log the login message
     socket.on(LOGIN, data => {
@@ -42,7 +56,10 @@ class ChatContainer extends Component {
 
     // Whenever the server emits 'new message', update the chat body
     socket.on(NEW_MESSAGE, data => {
-      this.addChatMessage(data);
+      const { currentUser } = this.props;
+      if (data.receiver_id === currentUser._id) {
+        this.addChatMessage({ username: data.username, message: data.message, timestamp: data.timestamp });
+      }
     });
 
     // Whenever the server emits 'typing', show the typing message
@@ -65,8 +82,8 @@ class ChatContainer extends Component {
     this.setState({ socket });
   }
 
-  addChatMessage = ({ username, message }) => {
-    const chat = { username, message };
+  addChatMessage = ({ username, message, timestamp }) => {
+    const chat = { username, message, timestamp };
     this.setState({ chats: this.state.chats.concat(chat) });
   };
 
@@ -87,17 +104,34 @@ class ChatContainer extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { message } = this.state;
-    const { username } = this.props;
-    console.log('PROPS:', this.props)
+    const { currentUser } = this.props;
+
     // if there is a non-empty message and a socket connection
     if (message) {
+      const msgTime = Date.now();
+
       this.addChatMessage({
-        username: username,
-        message: message
+        username: currentUser.name,
+        message: message,
+        timestamp: msgTime
       });
 
+      const data = {
+        message: message,
+        sender_id: currentUser._id,
+        receiver_id: this.props.contactUId,
+        timestamp: msgTime,
+        username: currentUser.name
+      };
+
+      this.props.sendMessage({
+        message: message,
+        sender_id: currentUser._id,
+        receiver_id: this.props.contactUId,
+        timestamp: msgTime,
+      });
       // tell server to execute 'new message' and send along one parameter
-      this.state.socket.emit(NEW_MESSAGE, message);
+      this.state.socket.emit(NEW_MESSAGE, data);
     }
     this.setState({ message: "" });
   };
@@ -121,23 +155,25 @@ class ChatContainer extends Component {
   };
 
   render() {
-    const { message, users, typingUsers } = this.state;
-    const { username } = this.props;
+    const { message, typingUsers, chats } = this.state;
+    const { currentUser, allUsers, contactUId } = this.props;
+    const connectedUsers = allUsers.filter(u => u._id !== currentUser._id);
 
     const disabled = this.state.message ? false : true;
+
     return (
       <Fragment>
         <div className="fw">
           <div className="d-flex main-wrapper">
             <div id="sidebar">
-              <Sidebar users={users} myUsername={username} />
+              <Sidebar conUsers={connectedUsers} contactUId={contactUId} />
             </div>
             <div style={{ width: 15 + "px" }} className="spacer"></div>
             <div id="chatbox" className="d-flex">
               <Messages
                 typingUsers={typingUsers}
-                chats={this.state.chats}
-                myUsername={username}
+                chats={chats}
+                myUsername={currentUser.name}
               />
               <form className="d-flex" onSubmit={this.handleSubmit}>
                 <input
@@ -157,4 +193,16 @@ class ChatContainer extends Component {
   }
 }
 
-export default ChatContainer;
+ChatContainer.propTypes = {
+  allUsers: PropTypes.array,
+  allMessages: PropTypes.array,
+  currentUser: PropTypes.object
+}
+
+const mapStateToProps = state => ({
+  allUsers: state.auth.allUsers,
+  allMessages: state.messages,
+  currentUser: state.auth.user
+})
+
+export default connect(mapStateToProps, { sendMessage })(ChatContainer);

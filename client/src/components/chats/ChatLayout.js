@@ -7,8 +7,9 @@ import ChatContainer from "./ChatContainer";
 import { VERIFY_USER, ADD_USER } from "../../events";
 
 class Layout extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       username: "Kirill",
       socket: null
@@ -16,7 +17,6 @@ class Layout extends Component {
   }
 
   componentWillMount() {
-    console.log('Current User:', this.props.currentUser);
     this.initSocket();
   }
 
@@ -51,10 +51,10 @@ class Layout extends Component {
   };
 
   render() {
-    const { socket, username } = this.state;
+    const { socket } = this.state;
     return (
       <div className="chat-container">
-        <ChatContainer username={username} socket={socket} />
+        <ChatContainer contactUId={this.props.match.params.uid}  socket={socket} />
       </div>
     );
   }

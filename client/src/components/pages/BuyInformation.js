@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 
@@ -13,7 +12,7 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
       <Fragment>
         <h3>There is not sell information about this sell.</h3>
       </Fragment>
-    )
+    );
   }
   const uId = space.userid;
   const seller = allUsers.find(u => uId === u._id);
@@ -42,7 +41,7 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
           <h3>Description: {space.description}</h3>
         </div>
         <div className="action-buttons">
-          <Link className="btn btn-primary" to="/messages">Contact</Link>
+          <Link className="btn btn-primary" to={`/message/${space.userid}`}>Contact</Link>
           <Link className="btn btn-primary" to={`/booking/${space._id}`} style={{ float: 'right' }}>Book</Link>
         </div>
       </div>

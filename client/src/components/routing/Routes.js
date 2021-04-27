@@ -34,7 +34,7 @@ const Routes = props => {
         <PrivateRoute exact path="/booking/:id" component={Booking} />
         <PrivateRoute exact path="/my-listings" component={MyListings} />
         <PrivateRoute exact path="/my-listings/new" component={AddListing} />
-        <PrivateRoute exact path="/messages" component={ChatLayout} />
+        <PrivateRoute exact path="/message/:uid" component={ChatLayout} />
         <Route component={NotFound} />
       </Switch>
     </section>
