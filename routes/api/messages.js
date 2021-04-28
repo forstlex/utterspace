@@ -10,7 +10,7 @@ const Message = require("../../models/Message");
 
 router.post(
   "/",
-  check('message', 'Message is required').notEmpty(),
+  check('text', 'Message Text is required').notEmpty(),
   check('sender_id', 'Sender ID is required').notEmpty(),
   check('receiver_id', 'Receiver ID is required').notEmpty(),
   auth,
@@ -22,7 +22,7 @@ router.post(
     }
 
     const newMessage = new Message({
-      text: req.body.message,
+      text: req.body.text,
       sender_id: req.body.sender_id,
       receiver_id: req.body.receiver_id,
       timestamp: req.body.timestamp

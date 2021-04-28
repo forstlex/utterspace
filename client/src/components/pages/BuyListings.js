@@ -13,7 +13,7 @@ const BuyListings = ({ buySpaces }) => {
   }
   const listItems = buySpaces.map((space, index) =>
     <div key={space._id} className="wrapper_space_item" id={`image${index}`}>
-      <div className="wp_image" onClick={()=> clickImage(space._id)}>
+      <div className="wp_image" onClick={() => clickImage(space._id)}>
         <img className="wp_image_frame"
           src={space.images[0]}
           alt="Space"
@@ -27,6 +27,7 @@ const BuyListings = ({ buySpaces }) => {
       </div>
     </div>
   );
+
   return (
     <Fragment>
       <div className="main_content" >

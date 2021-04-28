@@ -5,7 +5,7 @@ import { FaRegPaperPlane } from "react-icons/fa";
 
 import Messages from "./Messages";
 import Sidebar from "./Sidebar";
-import { sendMessage } from '../../actions/messages';
+import { sendMessage, addUnreadMessage } from '../../actions/messages';
 
 import {
   LOGIN,
@@ -20,8 +20,9 @@ class ChatContainer extends Component {
   constructor(props) {
     super(props);
     const contactedUsers = this.props.allUsers.filter(u => u._id === this.props.contactUId);
-
-    const chats = this.props.allMessages.map(msg => {
+    const chats = this.props.allMessages.filter(msg => {
+      return this.props.contactUId === msg.sender_id || this.props.contactUId === msg.receiver_id
+    }).map(msg => {
       const sender = this.props.allUsers.find(u => u._id === msg.sender_id);
       return {
         username: sender.name,
@@ -56,9 +57,16 @@ class ChatContainer extends Component {
 
     // Whenever the server emits 'new message', update the chat body
     socket.on(NEW_MESSAGE, data => {
-      const { currentUser } = this.props;
-      if (data.receiver_id === currentUser._id) {
+      const { currentUser, addUnreadMessage } = this.props;
+      if (data.receiver_id === currentUser._id && this.props.contactUId === data.sender_id) {
         this.addChatMessage({ username: data.username, message: data.message, timestamp: data.timestamp });
+      } else if (data.receiver_id === currentUser._id) {
+        addUnreadMessage({
+          text: data.message,
+          sender_id: data.sender_id,
+          receiver_id: data.receiver_id,
+          timestamp: data.timestamp,
+        })
       }
     });
 
@@ -80,6 +88,22 @@ class ChatContainer extends Component {
     });
 
     this.setState({ socket });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.contactUId !== this.props.contactUId) {
+      const chats = this.props.allMessages.filter(msg => {
+        return this.props.contactUId === msg.sender_id || this.props.contactUId === msg.receiver_id
+      }).map(msg => {
+        const sender = this.props.allUsers.find(u => u._id === msg.sender_id);
+        return {
+          username: sender.name,
+          message: msg.text,
+          timestamp: msg.timestamp
+        }
+      });
+      this.setState({ chats })
+    }
   }
 
   addChatMessage = ({ username, message, timestamp }) => {
@@ -125,7 +149,7 @@ class ChatContainer extends Component {
       };
 
       this.props.sendMessage({
-        message: message,
+        text: message,
         sender_id: currentUser._id,
         receiver_id: this.props.contactUId,
         timestamp: msgTime,
@@ -205,4 +229,4 @@ const mapStateToProps = state => ({
   currentUser: state.auth.user
 })
 
-export default connect(mapStateToProps, { sendMessage })(ChatContainer);
+export default connect(mapStateToProps, { sendMessage, addUnreadMessage })(ChatContainer);

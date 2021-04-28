@@ -763,6 +763,18 @@ button {
   margin-right: 6px;
 }
 
+.message-unread {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  font-size: 16px;
+  text-align: center;
+  padding: 5px;
+  background-color: greenyellow;
+  color: #222;
+}
 
 #chatbox {
   height: calc(100vh - 150px);

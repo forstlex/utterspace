@@ -1,6 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { LOAD_USER_MESSAES, SEND_MESSAGE } from './types';
+import { LOAD_USER_MESSAES, SEND_MESSAGE, ADD_UNREAD_MESSAGE } from './types';
 
 export const sendMessage = (message) => async dispatch => {
   try {
@@ -8,7 +8,7 @@ export const sendMessage = (message) => async dispatch => {
 
     dispatch({
       type: SEND_MESSAGE,
-      payload: res.data.message
+      payload: res.data
     });
   } catch(err) {
 
@@ -19,6 +19,13 @@ export const sendMessage = (message) => async dispatch => {
       dispatch(setAlert(err.response.statusText, 'danger'));
     }
   }
+}
+
+export const addUnreadMessage = (message) => dispatch => {
+  dispatch({
+    type: ADD_UNREAD_MESSAGE,
+    payload: { message }
+  });
 }
 
 export const loadUserMessages = (uId) => async dispatch => {

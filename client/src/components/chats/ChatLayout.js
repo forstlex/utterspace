@@ -11,13 +11,17 @@ class Layout extends Component {
     super(props);
 
     this.state = {
-      username: "Kirill",
       socket: null
     };
   }
 
   componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {});
     this.initSocket();
+  }
+
+  componentUnWillMount() {
+    this.unlisten();
   }
 
   /*
@@ -46,15 +50,11 @@ class Layout extends Component {
     }
   };
 
-  setUsername = username => {
-    this.setState({ username });
-  };
-
   render() {
     const { socket } = this.state;
     return (
       <div className="chat-container">
-        <ChatContainer contactUId={this.props.match.params.uid}  socket={socket} />
+        <ChatContainer contactUId={this.props.match.params.uid} socket={socket} />
       </div>
     );
   }

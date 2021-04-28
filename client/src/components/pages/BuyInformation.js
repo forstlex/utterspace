@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 
-const BuyInformation = ({ allUsers, buySpaces }) => {
+const BuyInformation = (props) => {
 
-  const space = buySpaces.find(space => space._id);
+  const space = props.buySpaces.find(space => space._id === props.match.params.id);
   if (!space) {
     return (
       <Fragment>
@@ -14,8 +14,9 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
       </Fragment>
     );
   }
+
   const uId = space.userid;
-  const seller = allUsers.find(u => uId === u._id);
+  const seller = props.allUsers.find(u => uId === u._id);
   const host = window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'https://utterspace.herokuapp.com/';
   const images = space.images.map(file => {
     const url = `${host}${file}`;
@@ -52,7 +53,8 @@ const BuyInformation = ({ allUsers, buySpaces }) => {
 
 BuyInformation.propTypes = {
   buySpaces: PropTypes.array,
-  allUsers: PropTypes.array
+  allUsers: PropTypes.array,
+  props: PropTypes.object
 }
 
 const mapStateToProps = state => ({
