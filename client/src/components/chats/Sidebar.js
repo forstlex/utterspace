@@ -35,7 +35,7 @@ const SideBar = ({ conUsers, contactUId, unReads, removeUnreadMessage }) => {
     if (unMsg) {
       setTimeout(() => {
         removeUnreadMessage(uId);
-      }, 2000);      
+      }, 1000);      
     }
     history.push(`/message/${uId}`);
   }

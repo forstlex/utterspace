@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const os = require('os');
 const dotenv = require('dotenv');
+const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const userRoutes = require("./routes/api/users");
@@ -48,6 +49,11 @@ require("./config/passport")(passport);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
+  // Express serve up index.html file if it doesn't recognize route
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 // Routes

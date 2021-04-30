@@ -2,7 +2,11 @@ import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaRegPaperPlane } from "react-icons/fa";
+import ReactNotification from 'react-notifications-component';
+import { store } from 'react-notifications-component';
+import 'animate.css';
 
+import 'react-notifications-component/dist/theme.css';
 import Messages from "./Messages";
 import Sidebar from "./Sidebar";
 import { sendMessage, addUnreadMessage, receiveMessage } from '../../actions/messages';
@@ -57,10 +61,38 @@ class ChatContainer extends Component {
 
     // Whenever the server emits 'new message', update the chat body
     socket.on(NEW_MESSAGE, data => {
-      const { currentUser, addUnreadMessage } = this.props;
-      if (data.receiver_id === currentUser._id && this.props.contactUId === data.sender_id) {
+      const { currentUser, addUnreadMessage, receiveMessage } = this.props;
+      if (data.receiver_id === currentUser._id && window.location.href.indexOf(data.sender_id) > 0) {
+        // When user receive message user is in currenct contact.
         this.addChatMessage({ username: data.username, message: data.text, timestamp: data.timestamp });
-      } else if (data.receiver_id === currentUser._id) {
+        receiveMessage({
+          text: data.text,
+          sender_id: data.sender_id,
+          receiver_id: data.receiver_id,
+          timestamp: data.timestamp,
+        });
+      } else if (data.receiver_id === currentUser._id && window.location.href.indexOf('message') > 0) {
+        addUnreadMessage({
+          text: data.text,
+          sender_id: data.sender_id,
+          receiver_id: data.receiver_id,
+          timestamp: data.timestamp,
+        });
+      } else if (data.receiver_id === currentUser._id && window.location.href.indexOf('message') < 0) {
+        console.log('SHOULD show notification');
+        store.addNotification({
+          title: "Message",
+          message: "You received new message",
+          type: "success",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        });
         addUnreadMessage({
           text: data.text,
           sender_id: data.sender_id,
@@ -187,6 +219,7 @@ class ChatContainer extends Component {
 
     return (
       <Fragment>
+        <ReactNotification />
         <div className="fw">
           <div className="d-flex main-wrapper">
             <div id="sidebar">
