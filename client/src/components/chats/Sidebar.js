@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 
+import { removeUnreadMessage } from '../../actions/messages';
+
 const colors = ['#00BCD4', '#FFB300', '#E91E63', '#8BC34A', '#00cfb6', '#795548']
 
-const SideBar = ({ conUsers, contactUId }) => {
+const SideBar = ({ conUsers, contactUId, unReads, removeUnreadMessage }) => {
   let history = useHistory();
   const _renderUser = (user, index) => {
     /*
@@ -13,7 +15,7 @@ const SideBar = ({ conUsers, contactUId }) => {
     output  0 1 2 3 4 5 0 1 2 3  4  5  0
     */
     const i = index % colors.length;
-
+    const unRead = unReads.find(u => u.uId === user._id);
     const userName = user.name
 
     return (
@@ -22,12 +24,20 @@ const SideBar = ({ conUsers, contactUId }) => {
           {/* {user.charAt(0)} */}
         </div>
         <span style={{ lineHeight: 40 + 'px', fontSize: 13 + 'px' }}>{userName}</span>
+        {unRead && <span className="message-unread">{unRead.count}</span>}
       </div>
     )
   }
 
   const clickUserInSideBar = (uId) => {
-    history.push(`/message/${uId}`)
+    // Checking the new message in selected user
+    const unMsg = unReads.find(u => u.uId === uId);
+    if (unMsg) {
+      setTimeout(() => {
+        removeUnreadMessage(uId);
+      }, 2000);      
+    }
+    history.push(`/message/${uId}`);
   }
 
   return (
@@ -48,12 +58,15 @@ const SideBar = ({ conUsers, contactUId }) => {
 }
 
 SideBar.propTypes = {
-  allUsers: PropTypes.array
+  allUsers: PropTypes.array,
+  unReads: PropTypes.array,
+  removeUnreadMessage: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  allUsers: state.auth.allUsers
+  allUsers: state.auth.allUsers,
+  unReads: state.messages.unReads
 })
 
-export default connect(mapStateToProps, {})(SideBar);
+export default connect(mapStateToProps, { removeUnreadMessage })(SideBar);
 

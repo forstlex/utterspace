@@ -5,7 +5,7 @@ import { FaRegPaperPlane } from "react-icons/fa";
 
 import Messages from "./Messages";
 import Sidebar from "./Sidebar";
-import { sendMessage, addUnreadMessage } from '../../actions/messages';
+import { sendMessage, addUnreadMessage, receiveMessage } from '../../actions/messages';
 
 import {
   LOGIN,
@@ -36,7 +36,7 @@ class ChatContainer extends Component {
       typing: false,
       chats,
       users: contactedUsers,
-      typingUsers: {}
+      typingUsers: {},
     };
   }
 
@@ -59,14 +59,14 @@ class ChatContainer extends Component {
     socket.on(NEW_MESSAGE, data => {
       const { currentUser, addUnreadMessage } = this.props;
       if (data.receiver_id === currentUser._id && this.props.contactUId === data.sender_id) {
-        this.addChatMessage({ username: data.username, message: data.message, timestamp: data.timestamp });
+        this.addChatMessage({ username: data.username, message: data.text, timestamp: data.timestamp });
       } else if (data.receiver_id === currentUser._id) {
         addUnreadMessage({
-          text: data.message,
+          text: data.text,
           sender_id: data.sender_id,
           receiver_id: data.receiver_id,
           timestamp: data.timestamp,
-        })
+        });
       }
     });
 
@@ -141,7 +141,7 @@ class ChatContainer extends Component {
       });
 
       const data = {
-        message: message,
+        text: message,
         sender_id: currentUser._id,
         receiver_id: this.props.contactUId,
         timestamp: msgTime,
@@ -179,7 +179,7 @@ class ChatContainer extends Component {
   };
 
   render() {
-    const { message, typingUsers, chats } = this.state;
+    const { message, typingUsers, chats, users } = this.state;
     const { currentUser, allUsers, contactUId } = this.props;
     const connectedUsers = allUsers.filter(u => u._id !== currentUser._id);
 
@@ -190,13 +190,14 @@ class ChatContainer extends Component {
         <div className="fw">
           <div className="d-flex main-wrapper">
             <div id="sidebar">
-              <Sidebar conUsers={connectedUsers} contactUId={contactUId} />
+              <Sidebar onlineUsers={users} conUsers={connectedUsers} contactUId={contactUId} />
             </div>
             <div style={{ width: 15 + "px" }} className="spacer"></div>
             <div id="chatbox" className="d-flex">
               <Messages
                 typingUsers={typingUsers}
                 chats={chats}
+                contactUId={contactUId}
                 myUsername={currentUser.name}
               />
               <form className="d-flex" onSubmit={this.handleSubmit}>
@@ -225,8 +226,8 @@ ChatContainer.propTypes = {
 
 const mapStateToProps = state => ({
   allUsers: state.auth.allUsers,
-  allMessages: state.messages,
+  allMessages: state.messages.all,
   currentUser: state.auth.user
 })
 
-export default connect(mapStateToProps, { sendMessage, addUnreadMessage })(ChatContainer);
+export default connect(mapStateToProps, { sendMessage, addUnreadMessage, receiveMessage })(ChatContainer);

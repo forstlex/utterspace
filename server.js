@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
     // we tell the client to execute 'new message'
     socket.broadcast.emit(NEW_MESSAGE, {
       username: data.username,
-      message: data.message,
+      text: data.text,
       sender_id: data.sender_id,
       receiver_id: data.receiver_id,
       timestamp: data.timestamp

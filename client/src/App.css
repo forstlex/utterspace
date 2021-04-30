@@ -771,9 +771,10 @@ button {
   border-radius: 50%;
   font-size: 16px;
   text-align: center;
-  padding: 5px;
-  background-color: greenyellow;
+  background-color: red;
   color: #222;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
 #chatbox {

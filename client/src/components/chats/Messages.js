@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 class Messages extends Component {
@@ -39,6 +41,7 @@ class Messages extends Component {
 
   renderChat(chats, myUsername) {
     if (chats.length > 0) {
+      const userUnRead = this.props.unReads.find(u => u.uId === this.props.contactUId)
       return chats.map((chat, index) => {
         const msgAlign = chat.username === myUsername ? 'right' : ''
         return (
@@ -50,6 +53,7 @@ class Messages extends Component {
               </div>
               {chat.username !== myUsername && <span className="text-muted sender">{chat.username}</span>}
             </div>
+            {userUnRead && (index + userUnRead.count) === chats.length - 1 && <hr style={{ borderTop: '2px solid red' }} />}
           </li>
         )
       })
@@ -74,4 +78,12 @@ class Messages extends Component {
 
 }
 
-export default Messages;
+Messages.propTypes = {
+  unReads: PropTypes.array
+}
+
+const mapStateToProps = state => ({
+  unReads: state.messages.unReads
+});
+
+export default connect(mapStateToProps, {})(Messages);

@@ -1,6 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { LOAD_USER_MESSAES, SEND_MESSAGE, ADD_UNREAD_MESSAGE } from './types';
+import { LOAD_USER_MESSAES, SEND_MESSAGE, ADD_UNREAD_MESSAGE, READ_MESSAGE, RECEIVE_NEW_MESSAGE } from './types';
 
 export const sendMessage = (message) => async dispatch => {
   try {
@@ -21,11 +21,25 @@ export const sendMessage = (message) => async dispatch => {
   }
 }
 
+export const receiveMessage = (message) => dispatch => {
+  dispatch({
+    type: RECEIVE_NEW_MESSAGE,
+    payload: { message }
+  })
+}
+
 export const addUnreadMessage = (message) => dispatch => {
   dispatch({
     type: ADD_UNREAD_MESSAGE,
     payload: { message }
   });
+}
+
+export const removeUnreadMessage = (uId) => dispatch => {
+  dispatch({
+    type: READ_MESSAGE,
+    payload: { uId }
+  })
 }
 
 export const loadUserMessages = (uId) => async dispatch => {
