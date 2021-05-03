@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const multer = require('multer');
 const router = express.Router();
 const mongoose = require('mongoose');
+const haversine = require('haversine-distance')
 
 const { check, validationResult } = require('express-validator');
 
@@ -58,6 +59,20 @@ router.post('/upload-images', upload.array('images', 2), (req, res, next) => {
   const files = req.files.map(file => file.path);
   res.status(201).json({ files: req.files.map(file => file.path) });
 });
+
+router.get("/near", async (req, res) => {
+  const pointA = { lat: parseFloat(req.query.lat), lng: parseFloat(req.query.lng) };
+  // const pointA = { lat: 43.225, lng: -79.68 } TESTING CODE
+  const allSpaces = await Space.find({ });
+  const nearSpaces = allSpaces.filter(s => {
+    // Find Spaces near in 50 km
+    if(haversine(pointA, s.geo) < 50000) {
+      return true
+    }
+    return false;
+  });
+  return res.status(200).json({ nearSpaces });
+})
 
 router.post(
   "/",

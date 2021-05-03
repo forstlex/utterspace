@@ -76,7 +76,7 @@ export default function App({ spaces }) {
     <GoogleMap
       id="map"
       mapContainerStyle={mapContainerStyle}
-      zoom={8}
+      zoom={15}
       center={center}
       options={options}
       onLoad={map => {

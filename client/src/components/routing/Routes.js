@@ -6,6 +6,7 @@ import Listings from '../pages/Listings';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import MyListings from '../pages/MyListings';
+import NearListings from '../pages/NearListings';
 import BuyListings from '../pages/BuyListings';
 import AddListing from '../pages/AddListing';
 import BuyInformation from '../pages/BuyInformation';
@@ -29,6 +30,7 @@ const Routes = props => {
         <Route exact path="/about" component={About} />
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/listings" component={Listings} />
+        <Route exact path="/my-location" component={NearListings} />
         <PrivateRoute exact path="/buy-listings" component={BuyListings} />
         <PrivateRoute exact path="/vendor-info/:id" component={BuyInformation} />
         <PrivateRoute exact path="/booking/:id" component={Booking} />

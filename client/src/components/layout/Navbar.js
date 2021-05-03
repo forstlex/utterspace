@@ -33,6 +33,9 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
   const guestLinks = (
     <ul>
       <li>
+        <Link to="/my-location">Use my location</Link>
+      </li>
+      <li>
         <Link to="/listings">Listings</Link>
       </li>
       <li>

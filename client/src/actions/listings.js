@@ -1,6 +1,8 @@
+import axios from 'axios';
+
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { ADD_SPACE, DELETE_SPACE, LOAD_USER_SPACES, LOAD_GUEST_SPACES } from './types';
+import { ADD_SPACE, DELETE_SPACE, LOAD_USER_SPACES, LOAD_GUEST_SPACES, LOAD_NEAR_SPACES } from './types';
 
 // Add space to sell
 export const addSpace = (formData, history) => async dispatch => {
@@ -67,5 +69,31 @@ export const loadGuestSpaces = () => async dispatch => {
     } else {
       dispatch(setAlert(err.response.statusText, 'danger'));
     }
+  }
+}
+
+export const loadNearSpaces = (longitude, latitude) => async dispatch => {
+  try {
+    const res = await api.get(`/spaces/near?lng=${longitude}&lat=${latitude}`);
+    dispatch({
+      type: LOAD_NEAR_SPACES,
+      payload: res.data
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert(err.response.statusText, 'danger'));
+    }
+  }
+}
+
+export const getUserLocation = () => async dispatch => {
+  try {
+    const response = await axios.get('https://geolocation-db.com/json/');
+    dispatch(loadNearSpaces(response.data.longitude, response.data.latitude));
+  } catch(err) {
+    console.log(err);
   }
 }
