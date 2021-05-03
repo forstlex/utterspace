@@ -78,13 +78,16 @@ class ChatContainer extends Component {
           timestamp: data.timestamp,
         });
       } else if (data.receiver_id === currentUser._id && window.location.href.indexOf('message') < 0) {
-        this.createNotification();
+        const existMsg = this.props.unReads.find(u => u.timestamp === data.timestamp);
         addUnreadMessage({
           text: data.text,
           sender_id: data.sender_id,
           receiver_id: data.receiver_id,
           timestamp: data.timestamp,
         });
+        if (!existMsg) {
+          this.createNotification();
+        }
       }
     });
 
@@ -110,7 +113,7 @@ class ChatContainer extends Component {
     if (unMsg) {
       setTimeout(() => {
         this.props.removeUnreadMessage(this.props.contactUId);
-      }, 1000);      
+      }, 1000);
     }
   }
 
