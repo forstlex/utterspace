@@ -9,15 +9,16 @@ import { VERIFY_USER, ADD_USER } from "../../events";
 class Layout extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      socket: null
+      socket: this.props.socket || null
     };
   }
 
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {});
-    this.initSocket();
+    if (!this.state.socket) {
+      this.initSocket();
+    }
   }
 
   componentUnWillMount() {
@@ -61,10 +62,12 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  socket: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.auth.user
+  currentUser: state.auth.user,
+  socket: state.messages.socket
 })
 export default connect(mapStateToProps, {})(Layout);
