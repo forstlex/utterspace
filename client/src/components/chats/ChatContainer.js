@@ -2,14 +2,13 @@ import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FaRegPaperPlane } from "react-icons/fa";
-import ReactNotification from 'react-notifications-component';
-import { store } from 'react-notifications-component';
-import 'animate.css';
+import { NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
-import 'react-notifications-component/dist/theme.css';
 import Messages from "./Messages";
 import Sidebar from "./Sidebar";
-import { sendMessage, addUnreadMessage, receiveMessage } from '../../actions/messages';
+
+import { sendMessage, addUnreadMessage, receiveMessage, removeUnreadMessage } from '../../actions/messages';
 
 import {
   LOGIN,
@@ -79,20 +78,7 @@ class ChatContainer extends Component {
           timestamp: data.timestamp,
         });
       } else if (data.receiver_id === currentUser._id && window.location.href.indexOf('message') < 0) {
-        console.log('SHOULD show notification');
-        store.addNotification({
-          title: "Message",
-          message: "You received new message",
-          type: "success",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        this.createNotification();
         addUnreadMessage({
           text: data.text,
           sender_id: data.sender_id,
@@ -120,6 +106,12 @@ class ChatContainer extends Component {
     });
 
     this.setState({ socket });
+    const unMsg = this.props.unReads.find(u => u.uId === this.props.contactUId);
+    if (unMsg) {
+      setTimeout(() => {
+        this.props.removeUnreadMessage(this.props.contactUId);
+      }, 1000);      
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -137,6 +129,10 @@ class ChatContainer extends Component {
       this.setState({ chats })
     }
   }
+
+  createNotification = () => {
+    return NotificationManager.info('You received a new message');
+  };
 
   addChatMessage = ({ username, message, timestamp }) => {
     const chat = { username, message, timestamp };
@@ -219,7 +215,6 @@ class ChatContainer extends Component {
 
     return (
       <Fragment>
-        <ReactNotification />
         <div className="fw">
           <div className="d-flex main-wrapper">
             <div id="sidebar">
@@ -254,13 +249,16 @@ class ChatContainer extends Component {
 ChatContainer.propTypes = {
   allUsers: PropTypes.array,
   allMessages: PropTypes.array,
-  currentUser: PropTypes.object
+  unReads: PropTypes.array,
+  currentUser: PropTypes.object,
+  removeUnreadMessage: PropTypes.func
 }
 
 const mapStateToProps = state => ({
   allUsers: state.auth.allUsers,
   allMessages: state.messages.all,
+  unReads: state.messages.unReads,
   currentUser: state.auth.user
 })
 
-export default connect(mapStateToProps, { sendMessage, addUnreadMessage, receiveMessage })(ChatContainer);
+export default connect(mapStateToProps, { sendMessage, addUnreadMessage, receiveMessage, removeUnreadMessage })(ChatContainer);

@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { NotificationContainer } from 'react-notifications';
+
 import Navbar from './components/layout/Navbar';
 import Routes from './components/routing/Routes';
 
@@ -33,6 +35,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Fragment>
+          <NotificationContainer />
           <Navbar />
           <Switch>            
             <Route component={Routes} />
