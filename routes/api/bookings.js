@@ -52,4 +52,15 @@ router.post(
   }
 );
 
+router.get("/:buyerid", auth, async (req, res)  => {
+  let allOrders = [];
+  try {
+    allOrders = await Booking.find({ buyerid: req.params.buyerid });
+    res.status(200).json({ allOrders });
+  } catch (error) {
+    console.error(error)
+    res.status(400).send('Unable to get orders');
+  }
+});
+
 module.exports = router;

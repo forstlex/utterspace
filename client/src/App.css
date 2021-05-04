@@ -562,6 +562,11 @@ button {
   padding: 0.25rem 0.5rem;
 }
 
+.wrapper_order_item {
+  margin: 15px auto;
+  max-width: 1000px;
+}
+
 .wrapper_space_item {
   background: #ffffff;
   -webkit-border-radius: 5px;
@@ -614,6 +619,11 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.wrapper_space_item .wp_order_description {
+  font-size: 16px;
+  padding: 5px;
 }
 
 .wrapper_space_item .wp_price {

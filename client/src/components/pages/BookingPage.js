@@ -87,7 +87,18 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
       setAlert('Start date should be before than end date.', 'danger');
       return;
     }
-    setShowPaypal(true);    
+    // setShowPaypal(true);
+    const booking = {
+      sid: space._id,
+      sellerid: seller._id,
+      buyerid: loggedinUser._id,
+      location: space.location,
+      images: space.images,
+      startdate: startDate.toDateString(),
+      enddate: endDate.toDateString(),
+      price: space.price * daysRent
+    }
+    createBooking(booking, history);
   }
 
   if (showPaypal) {

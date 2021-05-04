@@ -2,6 +2,8 @@ import api from '../utils/api';
 import { setAlert } from './alert';
 import { loadUserSpaces } from './listings';
 import { loadUserMessages } from './messages';
+import { loadMyOrders } from './booking';
+
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -23,6 +25,7 @@ export const loadUser = () => async dispatch => {
     });
     dispatch(loadUserSpaces(res.data.currentUser._id));
     dispatch(loadUserMessages(res.data.currentUser._id));
+    dispatch(loadMyOrders(res.data.currentUser._id));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR

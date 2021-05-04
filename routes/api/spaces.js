@@ -124,7 +124,8 @@ router.delete("/:id", auth, async(req, res) => {
 router.get("/:id", auth, async (req, res) => {
   const allSpaces = await Space.find({ available: true });
   const buySpaces = allSpaces.filter(s => s.userid != req.params.id);
-  const userSpaces = await Space.find({ $and: [{ userid: req.params.id }, { available: true }]});
+  // const userSpaces = await Space.find({ $and: [{ userid: req.params.id }, { available: true }]});
+  const userSpaces = await Space.find({ userid: req.params.id });
   return res.status(200).json({ allSpaces, userSpaces, buySpaces });
 });
 

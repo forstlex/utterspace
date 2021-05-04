@@ -25,7 +25,11 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
         <h5 className="wp_location">{space.location}</h5>
         <h5 className="wp_description">{space.description}</h5>
         <h5 className="wp_price">${space.price} per hour</h5>
-        <span className="wp_renttype">{space.renttype}</span>
+        <div>
+          <span className="wp_renttype">{space.renttype}</span>
+          <span className={space.available ? 'wp_space_free' : 'wp_space_rent'}>{space.available ? "Available" : `This space will expire at ${space.expiredate}`}</span>
+        </div>
+
         <button className="btn btn-primary" onClick={() => deleteLocation(space._id)}>Delete</button>
       </div>
     </div>
@@ -44,7 +48,6 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
               <GoogleMap spaces={userSpaces} />
             </div> : null
           }
-
         </div>
       }
     </Fragment>
