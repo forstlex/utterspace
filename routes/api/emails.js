@@ -17,40 +17,11 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log('TOEMAIL VALUE IS:', req.body.email);
-
-    // create reusable transporter object using the default SMTP transport
-    // let transporter = nodemailer.createTransport({
-    //   host: 'smtp.gmail.com',
-    //   port: 465,
-    //   secure: false, // true for 465, false for other ports
-    //   auth: {
-    //     user: 'hello@utterspace.co',
-    //     pass: 'Utterspace@hello'
-    //   }
-    // });
-
-    // // send mail with defined transport object
-    // let info;
-    // try {
-    //   info = await transporter.sendMail({
-    //     from: 'hello@utterspace.co', // sender address
-    //     to: 'kirill.palii2020@gmail.com', // req.body.toEmail
-    //     subject: 'Welcom Sign up', // Subject line
-    //     text: 'Hello world?', // plain text body
-    //     html: '<b>Hello world?</b>' // html body
-    //   });
-    // } catch (error) {
-    //   console.log('SENDING EMAIL ERROR:', error);
-    // }
-
-    // console.log('Message sent: %s', info.messageId);
-
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'hello@utterspace.co',
-        pass: 'Utterspace@hello'
+        user: 'XXX',
+        pass: 'XXX'
       }
     });
 
