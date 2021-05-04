@@ -19,6 +19,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
     description: '',
     location: '',
     price: 0,
+    size: 0,
     images: [],
     previewImages: []
   });
@@ -26,7 +27,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
   const [uploading, setUploading] = useState(false);
 
   let history = useHistory();
-  const { rentType, description, location, price, images, previewImages } = formData;
+  const { rentType, description, location, price, size, images, previewImages } = formData;
 
   const onFileChange = e => {
     const imgURL = URL.createObjectURL(e.target.files[0]);
@@ -64,6 +65,8 @@ const AddListing = ({ user, addSpace, setAlert }) => {
       setAlert('Location is required', 'danger');
     } else if (!price) {
       setAlert('Price is required', 'danger');
+    } else if (!size) {
+      setAlert('Size is required', 'danger');
     } else if (images.length === 0) {
       setAlert('Please select image.', 'danger')
     } else {
@@ -82,6 +85,7 @@ const AddListing = ({ user, addSpace, setAlert }) => {
               rentType, description,
               location, price,
               userid: user._id,
+              size: size,
               images: localPaths,
               geo: response.results[0].geometry.location
             };
@@ -162,6 +166,23 @@ const AddListing = ({ user, addSpace, setAlert }) => {
             />
             <div className="item_footer">
               <p>You can add price here.</p>
+            </div>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="item_body">
+            <label required>
+              Size
+              <span className="required">*</span>
+            </label>
+            <input
+              type="number"
+              name="size"
+              value={size}
+              onChange={onChange}
+            />
+            <div className="item_footer">
+              <p>You can add size(Sq ) here.</p>
             </div>
           </div>
         </div>

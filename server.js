@@ -11,6 +11,7 @@ const userRoutes = require("./routes/api/users");
 const spaceRoutes = require("./routes/api/spaces");
 const bookingRoutes = require("./routes/api/bookings");
 const messageRoutes = require('./routes/api/messages');
+const emailRoutes = require('./routes/api/emails');
 
 const { VERIFY_USER, LOGIN, USER_JOINED, ADD_USER, NEW_MESSAGE, TYPING, STOP_TYPING, USER_LEFT } = require('./client/src/events');
 
@@ -61,6 +62,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/spaces", spaceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/emails", emailRoutes);
 
 const port = process.env.PORT || 5000;
 

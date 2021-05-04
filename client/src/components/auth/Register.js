@@ -1,11 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+// import * as emailjs from 'emailjs-com';
+
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-import PropTypes from 'prop-types';
+import { sendSingUpEmail } from '../../actions/email';
 
-const Register = ({ setAlert, register, isAuthenticated }) => {
+const Register = ({ setAlert, register, isAuthenticated, sendSingUpEmail }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,6 +32,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
+    sendSingUpEmail(email);
     return <Redirect to="/my-listings" />;
   }
 
@@ -87,6 +91,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  sendSingUpEmail: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
 
@@ -94,4 +99,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { setAlert, register })(Register);
+export default connect(mapStateToProps, { setAlert, register, sendSingUpEmail })(Register);

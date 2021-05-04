@@ -34,6 +34,10 @@ const SpaceSchema = new Schema({
     type: Object,
     required: true
   },
+  size: {
+    type: Number,
+    required: true
+  },
   expiredate: {
     type: String,
   }

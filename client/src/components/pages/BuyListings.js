@@ -23,6 +23,7 @@ const BuyListings = ({ buySpaces }) => {
         <h5 className="wp_location">{space.location}</h5>
         <h5 className="wp_description">{space.description}</h5>
         <h5 className="wp_price">${space.price} per hour</h5>
+        <h5 className="wp_size">${space.size}</h5>
         <span className="wp_renttype">{space.renttype}</span>
       </div>
     </div>
