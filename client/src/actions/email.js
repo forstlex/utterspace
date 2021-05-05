@@ -16,9 +16,9 @@ export const sendSignUpEmail = (email) => async dispatch => {
   }
 }
 
-export const sendMessageEmail = (url) => async dispatch => {
+export const sendMessageEmail = (url, email) => async dispatch => {
   try {
-    const body = { url };
+    const body = { url, email };
     await api.post('/emails/message', body);
   } catch (err) {
     const errors = err.response.data.errors;

@@ -14,7 +14,7 @@ const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
   }
 
   const spaces = userSpaces.map((space, index) =>
-    <div key={space._id} className="wrapper_space_item" id={`image${index}`}>
+    <div key={space._id} style={{ maxWidth: 600 }}  className="wrapper_space_item" id={`image${index}`}>
       <div className="wp_image">
         <img className="wp_image_frame"
           src={space.images[0]}

@@ -7,7 +7,7 @@ const MyOrders = ({ myOrders, allUsers, allSpaces }) => {
     const seller = allUsers.find(u => u._id === order.sellerid);
     const bookedSpace = allSpaces.find(s => s._id === order.sid);
     return (
-      <div key={order._id} className="wrapper_space_item wrapper_order_item" id={index}>
+      <div key={order._id} style={{ maxWidth: 900, margin: '15px auto' }} className="wrapper_space_item" id={index}>
         <div className="wp_image">
           <img className="wp_image_frame"
             src={bookedSpace.images[0]}
@@ -17,14 +17,8 @@ const MyOrders = ({ myOrders, allUsers, allSpaces }) => {
         <div className="wp_content">
           <h5 className="wp_location">{bookedSpace.location}</h5>
           <h5 className="wp_order_description">{bookedSpace.description}</h5>
-          <h5 className="wp_price">${bookedSpace.price} per hour</h5>
-        </div>
-        <div>
-          From {order.startdate}
-          To {order.enddate}
-        </div>
-        <div>
-          {seller && seller.name}
+          <h5 className="wp_location">${bookedSpace.price} per hour. &emsp; From {order.startdate} &emsp; To {order.enddate}</h5>
+          <h5 className="wp_location">{seller && seller.name}</h5>
         </div>
       </div>
     );

@@ -19,25 +19,25 @@ const Space = require("../../models/Space");
 const DIR = './uploads/';
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, DIR);
-    },
-    filename: (req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, uuidv4() + '-' + fileName)
-    }
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, uuidv4() + '-' + fileName)
+  }
 });
 
 var upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-        }
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
     }
+  }
 });
 
 // @route GET api/spaces/all
@@ -63,15 +63,21 @@ router.post('/upload-images', upload.array('images', 2), (req, res, next) => {
 router.get("/near", async (req, res) => {
   const pointA = { lat: parseFloat(req.query.lat), lng: parseFloat(req.query.lng) };
   // const pointA = { lat: 43.225, lng: -79.68 } TESTING CODE
-  const allSpaces = await Space.find({ });
-  const nearSpaces = allSpaces.filter(s => {
-    // Find Spaces near in 50 km
-    if(haversine(pointA, s.geo) < 50000) {
-      return true
-    }
-    return false;
-  });
-  return res.status(200).json({ nearSpaces });
+  let allSpaces = [];
+  try {
+    allSpaces = await Space.find({});
+    const nearSpaces = allSpaces.filter(s => {
+      // Find Spaces near in 50 km
+      if (haversine(pointA, s.geo) < 50000) {
+        return true
+      }
+      return false;
+    });
+    res.status(200).json({ nearSpaces });
+  } catch (err) {
+    console.error(err);
+    res.status(400).send({ errors: [{ msg: 'Unable to get spaces' }] });
+  }
 })
 
 router.post(
@@ -112,7 +118,7 @@ router.post(
   }
 );
 
-router.delete("/:id", auth, async(req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const response = await Space.deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) });
   if (response.deletedCount === 1) {
     res.status(200).json({ delete: true });

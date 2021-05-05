@@ -562,11 +562,6 @@ button {
   padding: 0.25rem 0.5rem;
 }
 
-.wrapper_order_item {
-  margin: 15px auto;
-  max-width: 1000px;
-}
-
 .wrapper_space_item {
   background: #ffffff;
   -webkit-border-radius: 5px;
@@ -576,7 +571,6 @@ button {
   overflow: hidden;
   border: solid 1px #e4e4e4;
   margin-bottom: 15px;
-  max-width: 600px;
 }
 
 .wrapper_space_item .wp_image {

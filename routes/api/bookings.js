@@ -41,18 +41,18 @@ router.post(
 
     newBooking.save()
       .then(booking => {
-        Space.updateOne({ _id: req.body.sid }, { $set: { available: false, expiredate: req.body.enddate }})
+        Space.updateOne({ _id: req.body.sid }, { $set: { available: false, expiredate: req.body.enddate } })
           .then(res.status(200).json({ booking }))
           .catch(error => console.log('Update space booked error:', error))
       })
       .catch(err => {
-        console.log('Booking save error:', err) 
+        console.log(err)
         res.status(400).send("unable to save to database");
       });
   }
 );
 
-router.get("/:buyerid", auth, async (req, res)  => {
+router.get("/:buyerid", auth, async (req, res) => {
   let allOrders = [];
   try {
     allOrders = await Booking.find({ buyerid: req.params.buyerid });

@@ -46,7 +46,7 @@ const BuyInformation = (props) => {
       props.sendMessage(data);
       props.sendContactRequest(seller._id, props.currentUser._id);
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'https://utterspace.herokuapp.com/';
-      props.sendMessageEmail(`${host}message/${space.userid}`);
+      props.sendMessageEmail(`${host}message/${space.userid}`, seller.email);
     }
 
     history.push(`/message/${space.userid}`);
