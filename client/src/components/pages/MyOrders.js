@@ -18,7 +18,7 @@ const MyOrders = ({ myOrders, allUsers, allSpaces }) => {
           <h5 className="wp_location">{bookedSpace.location}</h5>
           <h5 className="wp_order_description">{bookedSpace.description}</h5>
           <h5 className="wp_location">${bookedSpace.price} per hour. &emsp; From {order.startdate} &emsp; To {order.enddate}</h5>
-          <h5 className="wp_location">{seller && seller.name}</h5>
+          <h5 className="wp_location">Vendor Name: {seller.name} &emsp; Booking State: {order.state}</h5>
         </div>
       </div>
     );

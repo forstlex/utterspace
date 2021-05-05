@@ -1,12 +1,26 @@
-import { CREATE_BOOKING, BOOKING_REQUEST, BOOKING_FAILURE, MY_ORDERS, ALL_ORDERS } from '../actions/types';
+import {
+  CREATE_BOOKING,
+  BOOKING_REQUEST,
+  BOOKING_FAILURE,
+  MY_ORDERS,
+  ALL_ORDERS,
+  ACCEPT_BOOKING_REQUEST,
+  ACCEPT_BOOKING_SUCCESS,
+  ACCEPT_BOOKING_FAIL,
+  REJECT_BOOKING_REQUEST,
+  REJECT_BOOKING_SUCCESS,
+  REJECT_BOOKING_FAIL
+} from '../actions/types';
 
 const initialState = {
   all: [],
   myOrders: [],
-  bookingRequest: false
+  bookingRequest: false,
+  clickAccept: false,
+  clickReject: false,
 };
 
-function spaceReducer(state = initialState, action) {
+function bookingReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case CREATE_BOOKING:
@@ -34,9 +48,31 @@ function spaceReducer(state = initialState, action) {
         ...state,
         all: payload
       }
+    case ACCEPT_BOOKING_REQUEST:
+      return {
+        ...state,
+        clickAccept: true
+      }
+    case ACCEPT_BOOKING_SUCCESS:
+    case ACCEPT_BOOKING_FAIL:
+      return {
+        ...state,
+        clickAccept: false
+      }
+    case REJECT_BOOKING_REQUEST:
+      return {
+        ...state,
+        clickReject: true
+      }
+    case REJECT_BOOKING_SUCCESS:
+    case REJECT_BOOKING_FAIL:
+      return {
+        ...state,
+        clickReject: false
+      }
     default:
       return state;
   }
 }
 
-export default spaceReducer;
+export default bookingReducer;
