@@ -1,11 +1,18 @@
 import api from '../utils/api';
-import { SEND_SIGNUP_EMAIL } from './types';
 import { setAlert } from './alert';
+import {
+  SEND_CONTACT_REQUEST,
+  ALL_CONTACT_REQUESTS
+} from './types';
 
-export const sendSignUpEmail = (email) => async dispatch => {
+
+export const sendContactRequest = (sellerId, buyerId) => async dispatch => {
   try {
-    const body = { email };
-    await api.post('/emails/signup', body);
+    const res = await api.post('/contacts', { sellerid: sellerId, buyerid: buyerId });
+    dispatch({
+      type: SEND_CONTACT_REQUEST,
+      payload: res.data
+    });
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
@@ -16,10 +23,13 @@ export const sendSignUpEmail = (email) => async dispatch => {
   }
 }
 
-export const sendMessageEmail = (url) => async dispatch => {
+export const loadUserContacts = (buyerId) => async dispatch => {
   try {
-    const body = { url };
-    await api.post('/emails/message', body);
+    const res = await api.get(`/contacts/${buyerId}`);
+    dispatch({
+      type: ALL_CONTACT_REQUESTS,
+      payload: res.data
+    });
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

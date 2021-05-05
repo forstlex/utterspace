@@ -3,6 +3,7 @@ import { setAlert } from './alert';
 import { loadUserSpaces } from './listings';
 import { loadUserMessages } from './messages';
 import { loadMyOrders } from './booking';
+import { loadUserContacts } from './contacts';
 
 import {
   REGISTER_SUCCESS,
@@ -26,6 +27,7 @@ export const loadUser = () => async dispatch => {
     dispatch(loadUserSpaces(res.data.currentUser._id));
     dispatch(loadUserMessages(res.data.currentUser._id));
     dispatch(loadMyOrders(res.data.currentUser._id));
+    dispatch(loadUserContacts(res.data.currentUser._id));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR

@@ -24,6 +24,8 @@ const Login = ({ login, isAuthenticated, loginFail }) => {
   };
 
   if (isAuthenticated) {
+    // Testing Mail
+    // sendSignUpEmail(email);
     return <Redirect to="/my-listings" />;
   }
 

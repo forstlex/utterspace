@@ -627,7 +627,15 @@ button {
 }
 
 .wrapper_space_item .wp_price {
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 36px;
+  font-weight: 300;
+  color: #333333;
+  margin-left: 5px;
+}
+
+.wrapper_space_item .wp_size {
+  font-size: 18px;
   line-height: 36px;
   font-weight: 300;
   color: #333333;

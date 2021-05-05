@@ -1,6 +1,12 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { LOAD_USER_MESSAES, SEND_MESSAGE, ADD_UNREAD_MESSAGE, READ_MESSAGE, RECEIVE_NEW_MESSAGE } from './types';
+import {
+  LOAD_USER_MESSAES,
+  SEND_MESSAGE,
+  ADD_UNREAD_MESSAGE,
+  READ_MESSAGE,
+  RECEIVE_NEW_MESSAGE
+} from './types';
 
 export const sendMessage = (message) => async dispatch => {
   try {
@@ -10,7 +16,7 @@ export const sendMessage = (message) => async dispatch => {
       type: SEND_MESSAGE,
       payload: res.data
     });
-  } catch(err) {
+  } catch (err) {
 
     const errors = err.response.data.errors;
     if (errors) {

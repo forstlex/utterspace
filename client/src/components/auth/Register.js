@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-import { sendSingUpEmail } from '../../actions/email';
+import { sendSignUpEmail } from '../../actions/email';
 
-const Register = ({ setAlert, register, isAuthenticated, sendSingUpEmail }) => {
+const Register = ({ setAlert, register, isAuthenticated, sendSignUpEmail }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,7 +32,7 @@ const Register = ({ setAlert, register, isAuthenticated, sendSingUpEmail }) => {
   };
 
   if (isAuthenticated) {
-    sendSingUpEmail(email);
+    sendSignUpEmail(email);
     return <Redirect to="/my-listings" />;
   }
 
@@ -91,7 +91,7 @@ const Register = ({ setAlert, register, isAuthenticated, sendSingUpEmail }) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
-  sendSingUpEmail: PropTypes.func.isRequired,
+  sendSignUpEmail: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
 
@@ -99,4 +99,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { setAlert, register, sendSingUpEmail })(Register);
+export default connect(mapStateToProps, { setAlert, register, sendSignUpEmail })(Register);
