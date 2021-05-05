@@ -10,7 +10,7 @@ import { setAlert } from '../../actions/alert';
 import { createBooking } from '../../actions/booking';
 import PaypalButtons from "../payment/PaypalButtons";
 
-const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, createBooking, bookingRequest }) => {
+const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, createBooking, bookingRequest, allBookings }) => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -22,7 +22,7 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
 
   const sId = match.params.id;
   const space = buySpaces.find(s => s._id === sId);
-
+  const booking = allBookings.find(b => b.sid === match.params.id);
   if (!space) {
     return (
       <Fragment>
@@ -66,19 +66,27 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
     setSelectDayError(false);
   }
 
+  const clickPayButton = () => {
+    if (booking.state === 'waiting') {
+      return;
+    }
+    setShowPaypal(true);
+  }
+
   const finishPayment = () => {
     setShowPaypal(false);
-    const booking = {
-      sid: space._id,
-      sellerid: seller._id,
-      buyerid: loggedinUser._id,
-      location: space.location,
-      images: space.images,
-      startdate: startDate.toDateString(),
-      enddate: endDate.toDateString(),
-      price: space.price * daysRent
-    }
-    createBooking(booking, history);
+    // Update booking state to accept
+    // const booking = {
+    //   sid: space._id,
+    //   sellerid: seller._id,
+    //   buyerid: loggedinUser._id,
+    //   location: space.location,
+    //   images: space.images,
+    //   startdate: startDate.toDateString(),
+    //   enddate: endDate.toDateString(),
+    //   price: space.price * daysRent
+    // }
+    // createBooking(booking, history);
   }
 
   const onSubmit = e => {
@@ -87,7 +95,7 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
       setAlert('Start date should be before than end date.', 'danger');
       return;
     }
-    // setShowPaypal(true);
+
     const booking = {
       sid: space._id,
       sellerid: seller._id,
@@ -98,7 +106,7 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
       enddate: endDate.toDateString(),
       price: space.price * daysRent
     }
-    createBooking(booking, history);
+    createBooking(booking, host, seller.email, history);
   }
 
   if (showPaypal) {
@@ -128,8 +136,10 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
           <div className="booking-info"><span className="booking-info-title">Price per day:</span> {space.price}</div>
           <div className="booking-info"><span className="booking-info-title">Total Price: {!selectDayError && space.price * daysRent}</span> </div>
         </div>
-
-        <button className="btn btn-primary" type="submit">Book {bookingRequest && <i className="fas fa-spinner fa-spin" />}</button>
+        {booking ?
+          <button className="btn btn-primary" onClick={clickPayButton}>{booking.state === 'waiting' ? 'Waiting' : 'Pay'}</button> :
+          <button className="btn btn-primary" type="submit">Book {bookingRequest && <i className="fas fa-spinner fa-spin" />}</button>
+        }
       </form>
     </Fragment>
   )
@@ -138,7 +148,9 @@ const BookingPage = ({ match, setAlert, buySpaces, allUsers, loggedinUser, creat
 BookingPage.propTypes = {
   buySpaces: PropTypes.array,
   allUsers: PropTypes.array,
+  allBookings: PropTypes.array,
   loggedinUser: PropTypes.object,
+  bookingRequest: PropTypes.bool,
   setAlert: PropTypes.func,
   createBooking: PropTypes.func
 }
@@ -146,6 +158,7 @@ BookingPage.propTypes = {
 const mapStateToProps = state => ({
   buySpaces: state.listings.buySpaces,
   allUsers: state.auth.allUsers,
+  allBookings: state.bookings.all,
   loggedinUser: state.auth.user,
   bookingRequest: state.bookings.bookingRequest
 });

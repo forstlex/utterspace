@@ -25,6 +25,7 @@ const MyOrders = ({ myOrders, allUsers, allSpaces }) => {
   });
   return (
     <Fragment>
+      {orderlist.length === 0 && <h1>There are not any orders</h1>}
       {orderlist}
     </Fragment>
   )

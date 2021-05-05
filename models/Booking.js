@@ -34,6 +34,10 @@ const BookingSchema = new Schema({
   price: {
     type: Number,
     required: true
+  },
+  state: {
+    type: String,
+    required: true
   }
 });
 

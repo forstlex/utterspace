@@ -29,3 +29,18 @@ export const sendMessageEmail = (url, email) => async dispatch => {
     }
   }
 }
+
+export const sendReceiveBookingEmail = (url, email) => async dispatch => {
+  try {
+    const body = { url, email };
+    await api.post('/emails/receive-booking', body);
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert(err.response.statusText, 'danger'));
+    }
+  }
+
+}

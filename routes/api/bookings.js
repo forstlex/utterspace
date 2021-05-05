@@ -36,7 +36,8 @@ router.post(
       images: req.body.images,
       startdate: req.body.startdate,
       enddate: req.body.enddate,
-      price: req.body.price
+      price: req.body.price,
+      state: "waiting"
     });
 
     newBooking.save()
@@ -47,10 +48,21 @@ router.post(
       })
       .catch(err => {
         console.log(err)
-        res.status(400).send("unable to save to database");
+        res.status(400).send({ errors: [{ msg: 'Unable to save booking' }] });
       });
   }
 );
+
+router.get('/', auth, async (req, res) => {
+  let allOrders = [];
+  try {
+    allOrders = await Booking.find({});
+    res.status(200).json({ allOrders });
+  } catch (error) {
+    console.error(error)
+    res.status(400).send({ errors: [{ msg: 'Unable to get all orders' }] });
+  }
+});
 
 router.get("/:buyerid", auth, async (req, res) => {
   let allOrders = [];
@@ -58,8 +70,8 @@ router.get("/:buyerid", auth, async (req, res) => {
     allOrders = await Booking.find({ buyerid: req.params.buyerid });
     res.status(200).json({ allOrders });
   } catch (error) {
-    console.error(error)
-    res.status(400).send('Unable to get orders');
+    console.error(error);
+    res.status(400).send({ errors: [{ msg: 'Unable to get orders' }] });
   }
 });
 

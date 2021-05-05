@@ -1,7 +1,7 @@
-import { CREATE_BOOKING, BOOKING_REQUEST, BOOKING_FAILURE, MY_ORDERS } from '../actions/types';
+import { CREATE_BOOKING, BOOKING_REQUEST, BOOKING_FAILURE, MY_ORDERS, ALL_ORDERS } from '../actions/types';
 
 const initialState = {
-  bookings: [],
+  all: [],
   myOrders: [],
   bookingRequest: false
 };
@@ -11,7 +11,7 @@ function spaceReducer(state = initialState, action) {
   switch (type) {
     case CREATE_BOOKING:
       return {
-        bookings: state.bookings.concat(payload),
+        all: state.all.concat(payload),
         bookingRequest: false,
       };
     case BOOKING_REQUEST:
@@ -29,7 +29,11 @@ function spaceReducer(state = initialState, action) {
         ...state,
         myOrders: payload
       }
-
+    case ALL_ORDERS:
+      return {
+        ...state,
+        all: payload
+      }
     default:
       return state;
   }

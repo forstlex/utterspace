@@ -82,7 +82,7 @@ BuyInformation.propTypes = {
   allUsers: PropTypes.array,
   contactRequests: PropTypes.array,
   props: PropTypes.object,
-  currentUser: PropTypes.object,
+  currentUser: PropTypes.object
 }
 
 const mapStateToProps = state => ({
