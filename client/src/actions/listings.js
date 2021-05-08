@@ -75,6 +75,7 @@ export const loadGuestSpaces = () => async dispatch => {
 export const loadNearSpaces = (longitude, latitude) => async dispatch => {
   try {
     const res = await api.get(`/spaces/near?lng=${longitude}&lat=${latitude}`);
+    console.log('Near Space:', res.data)
     dispatch({
       type: LOAD_NEAR_SPACES,
       payload: res.data
