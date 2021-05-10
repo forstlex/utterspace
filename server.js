@@ -50,7 +50,7 @@ app.use('/uploads', express.static('uploads'));
 require("./config/passport")(passport);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  app.use(express.static(path.join(__dirname, 'client/build')));
   // Express serve up index.html file if it doesn't recognize route
 
   app.get('*', (req, res) => {
