@@ -8,7 +8,7 @@ import Spinner from '../layout/Spinner';
 import { deleteSpace } from '../../actions/listings';
 
 const MyListings = ({ userSpaces, allSpaces, loadingSpace, deleteSpace }) => {
-
+  console.log('MY LISTING PAGE')
   const deleteLocation = (id) => {
     deleteSpace(id);
   }
