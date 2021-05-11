@@ -19,7 +19,9 @@ import {
 // Load User
 export const loadUser = () => async dispatch => {
   try {
+    console.log('USER LOGIN BEFORE');
     const res = await api.get('/users/login');
+    console.log('API RESPONSE:', res.data);
     dispatch({
       type: USER_LOADED,
       payload: res.data
@@ -68,12 +70,12 @@ export const login = (email, password) => async dispatch => {
   })
   try {
     const res = await api.post('/users/login', body);
-
+    
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data
     });
-
+    console.log('LOAD USER INFORMATION')
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
