@@ -79,8 +79,10 @@ router.post(
 router.get('/login', auth, async (req, res) => {
   let user;
   let allUsers;
+  console.log('BACK END API LOGIN', 'USER ID:', req.user.id);
   try {
     user = await User.findById(req.user.id).select('-password');
+    console.log('FIND USER INFORMATION:', user);
     // res.json(user);
   } catch (err) {
     console.error(err.message);
